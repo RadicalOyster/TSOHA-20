@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2>Add new creature</h2>
+<form method="POST" action="{{ url_for('creatures_create') }}">
+    name:
+    <input type="text" name="name"/>
+    hp:
+    <input type="number" name="hp"/>
+    hp formula:
+    <input type="string" name="formula"/>
+    ac:
+    <input type="number" name="ac"/>
+    <br/>
+    speed:
+    <input type="number" name="speed"/>
+    flying speed:
+    <input type="number" name="flyingSpeed"/>
+    swimming speed:
+    <input type="number" name="swimming speed"/>
+    <br/>
+    str:
+    <input type="number" name="strength"/>
+    dex:
+    <input type="number" name="dex"/>
+    con:
+    <input type="number" name="con"/>
+    int:
+    <input type="number" name="intelligence"/>
+    wis:
+    <input type="number" name="wis"/>
+    cha:
+    <input type="number" name="cha"/>
+    <br/>
+    cr:
+    <input type="number" step="0.001" min="0" name="cr"/>
+    <br/>
+    <br/>
+    <input type="submit" value="Add creature"/>
+</form>
+{% endblock %}

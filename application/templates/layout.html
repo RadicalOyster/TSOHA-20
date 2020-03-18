@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Dungeons and Dragons Database</title>
-  </head>
+</head>
 
-  <body>
-    {% block body %}
-      <p>
-        Content.
-      </p>
-    {% endblock %}
-  </body>
+<body>
+<ul>
+    <li><a href="{{ url_for('creature_index') }}">List creatures</a></li>
+    <li><a href="{{ url_for('creature_form') }}">Add a creature</a></li>
+</ul>
+
+{% block body %}
+<p>
+    Content.
+</p>
+{% endblock %}
+</body>
 </html>

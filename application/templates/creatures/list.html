@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% for creature in creatures %}
+<div style="background-color: #ebe1c7" style="width: 1500px">
+    <h2 style="color:maroon">{{creature.name}}</h2>
+    <b>Armor Class:</b> {{ creature.ac }}
+    <br/>
+    <b>HP: </b> {{ creature.hp }} ({{ creature.formula }})
+    <br/>
+    <b>Challenge: </b>{{ creature.cr }}
+    <br/>
+    <br/>
+    <table style="width:300px">
+        <tr style="color:maroon">
+            <th>STR</th>
+            <th>DEX</th>
+            <th>CON</th>
+            <th>INT</th>
+            <th>WIS</th>
+            <th>CHA</tH>
+        </tr>
+
+        <tr>
+            <td align="center"> {{ creature.str }}</td>
+            <td align="center"> {{ creature.dex }}</td>
+            <td align="center"> {{ creature.con }}</td>
+            <td align="center"> {{ creature.int }}</td>
+            <td align="center"> {{ creature.wis }}</td>
+            <td align="center"> {{ creature.cha }}</td>
+        </tr>
+
+        <tr style="color:maroon">
+            <th>Speed</th>
+            <th>Fly</th>
+            <th>Swim</th>
+        </tr>
+
+        <tr>
+            <td align="center"> {{ creature.speed }} ft.</td>
+            <td align="center"> {{ creature.flyspeed }} ft.</td>
+            <td align="center"> {{ creature.swimspeed }} ft.</td>
+        </tr>
+    </table>
+    <h3>Edit stats</h3>
+	<form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
+        str:
+        <input type="number" name="strength"/>
+        dex:
+        <input type="number" name="dex"/>
+        con:
+        <input type="number" name="con"/>
+        int:
+        <input type="number" name="intelligence"/>
+        wis:
+        <input type="number" name="wis"/>
+        cha:
+        <input type="number" name="cha"/>
+        <br/>
+        <input type="submit" value="Update stats"/>
+    </form>
+</div>
+{% endfor %}
+{% endblock %}
