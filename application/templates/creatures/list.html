@@ -3,7 +3,7 @@
 {% block body %}
 {% for creature in creatures %}
 <div style="background-color: #ebe1c7" style="width: 1500px">
-    <h2 style="color:maroon">{{creature.name}}</h2>
+    <h2><a style="color:maroon" href="{{ url_for('show_creature', creature_id = creature.id) }}">{{creature.name}}</a></h2>
     <b>Armor Class:</b> {{ creature.ac }}
     <br/>
     <b>HP: </b> {{ creature.hp }} ({{ creature.formula }})
@@ -42,23 +42,6 @@
             <td align="center"> {{ creature.swimspeed }} ft.</td>
         </tr>
     </table>
-    <h3>Edit stats</h3>
-	<form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
-        str:
-        <input type="number" name="strength"/>
-        dex:
-        <input type="number" name="dex"/>
-        con:
-        <input type="number" name="con"/>
-        int:
-        <input type="number" name="intelligence"/>
-        wis:
-        <input type="number" name="wis"/>
-        cha:
-        <input type="number" name="cha"/>
-        <br/>
-        <input type="submit" value="Update stats"/>
-    </form>
 </div>
 {% endfor %}
 {% endblock %}

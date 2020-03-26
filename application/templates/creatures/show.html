@@ -4,12 +4,12 @@
 <div style="background-color: #ebe1c7" style="width: 1500px">
     <h2 style="color:maroon">{{creature.name}}</h2>
     <b>Armor Class:</b> {{ creature.ac }}
-    <br/>
+    <br />
     <b>HP: </b> {{ creature.hp }} ({{ creature.formula }})
-    <br/>
+    <br />
     <b>Challenge: </b>{{ creature.cr }}
-    <br/>
-    <br/>
+    <br />
+    <br />
     <table style="width:300px">
         <tr style="color:maroon">
             <th>STR</th>
@@ -41,22 +41,128 @@
             <td align="center"> {{ creature.swimspeed }} ft.</td>
         </tr>
     </table>
+    {% if current_user.is_authenticated %}
     <h3>Edit stats</h3>
-	<form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
-        str:
-        <input type="number" name="strength"/>
-        dex:
-        <input type="number" name="dex"/>
-        con:
-        <input type="number" name="con"/>
-        int:
-        <input type="number" name="intelligence"/>
-        wis:
-        <input type="number" name="wis"/>
-        cha:
-        <input type="number" name="cha"/>
-        <br/>
-        <input type="submit" value="Update stats"/>
+    <form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
+        <table>
+            <tr>
+                <td>
+                    {{ form.name.label }}
+                </td>
+                <td>
+                    {{ form.name }}
+                </td>
+                <td>
+                    {{ form.hp.label }}
+                </td>
+                <td>
+                    {{ form.hp }}
+                </td>
+                <td>
+                    {{ form.formula.label }}
+                </td>
+                <td>
+                    {{ form.formula }}
+                </td>
+                <td>
+                    {{ form.ac.label }}
+                </td>
+                <td>
+                    {{ form.ac }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.speed.label }}
+                </td>
+                <td>
+                    {{ form.speed }}
+                </td>
+                <td>
+                    {{ form.flyspeed.label }}
+                </td>
+                <td>
+                    {{ form.flyspeed }}
+                </td>
+                <td>
+                    {{ form.swimspeed.label }}
+                </td>
+                <td>
+                    {{ form.swimspeed }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.strength.label }}
+                </td>
+                <td>
+                    {{ form.strength }}
+                </td>
+                <td>
+                    {{ form.dex.label }}
+                </td>
+                <td>
+                    {{ form.dex }}
+                </td>
+                <td>
+                    {{ form.con.label }}
+                </td>
+                <td>
+                    {{ form.con }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.intelligence.label }}
+                </td>
+                <td>
+                    {{ form.intelligence }}
+                </td>
+                <td>
+                    {{ form.wis.label }}
+                </td>
+                <td>
+                    {{ form.wis }}
+                </td>
+                <td>
+                    {{ form.cha.label }}
+                </td>
+                <td>
+                    {{ form.cha }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.cr.label }}
+                </td>
+                <td>
+                    {{ form.cr }}
+                </td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Update stats" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    <form method="POST" action="{{ url_for('delete_creature', creature_id=creature.id) }}">
+        <input type=hidden value="{{ creature.id }}" name=creature_to_delete>
+        <input type="submit" value="Delete Creature"/>
     </form>
 </div>
+<div>
+    <ul>
+        {% for field in form.errors %}
+        {% for error in form.errors[field] %}
+        <div class="alert alert-error">
+            <strong style="color:red">Error in field {{field}}</strong> {{error}}
+        </div>
+        {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
 {% endblock %}

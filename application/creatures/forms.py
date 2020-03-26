@@ -19,3 +19,22 @@ class CreatureForm(FlaskForm):
 
     class Meta:
         csrf = False
+
+class CreatureEditForm(FlaskForm):
+    name = StringField("Name")
+    hp = IntegerField("HP")
+    formula = StringField("HP formula")
+    ac = IntegerField("AC")
+    speed = IntegerField("Speed")
+    flyspeed = IntegerField("Flying speed")
+    swimspeed = IntegerField("Swimming speed")
+    strength = IntegerField("STR")
+    dex = IntegerField("DEX")
+    con = IntegerField("CON")
+    intelligence = IntegerField("INT")
+    wis = IntegerField("WIS")
+    cha = IntegerField("CHA")
+    cr = DecimalField("CR")
+
+    class Meta:
+        csrf = False
