@@ -21,6 +21,13 @@ def creature_index():
 def creature_form():
     return render_template("creatures/new.html", form = CreatureForm())
 
+@app.route("/creatures/<creature_id>/", methods=["GET"])
+def show_creature(creature_id):
+    print("THIS IS POOOOOARTOAEOTAEOTAEOTO\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa\naaaa")
+    if int(creature_id) <= len(Creature.query.all()):
+        return render_template("creatures/show.html", creature=(Creature.query.filter_by(id=creature_id).first()))
+    return redirect(url_for("creature_index"))
+
 
 @app.route("/creatures/<creature_id>/", methods=["POST"])
 def change_creature_stats(creature_id):
