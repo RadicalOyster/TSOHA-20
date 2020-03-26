@@ -9,4 +9,10 @@ The purpose of this application is to be able to quickly add and retrieve inform
 * Editing the ability scores of existing creatures
 
 **App in Heroku**
+
 [https://dnd-database.herokuapp.com/](https://dnd-database.herokuapp.com/)
+
+**Documentation**
+
+* [Database diagram](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/preliminary%20database%20diagram.png)
+* [User stories](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/user_stories.md)
