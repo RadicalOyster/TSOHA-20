@@ -15,7 +15,7 @@ class CreatureForm(FlaskForm):
     intelligence = IntegerField("INT", [validators.NumberRange(min=1)])
     wis = IntegerField("WIS", [validators.NumberRange(min=1)])
     cha = IntegerField("CHA", [validators.NumberRange(min=1)])
-    cr = DecimalField("CR", [validators.NumberRange(min=1)])
+    cr = DecimalField("CR")
 
     class Meta:
         csrf = False
