@@ -1,6 +1,9 @@
 from flask import redirect, render_template, request, url_for
+from flask_login import login_required
+
 from application._init_ import app, db
 from application.creatures.models import Creature
+from application.creatures.forms import CreatureForm
 
 
 @app.route("/")
@@ -14,8 +17,9 @@ def creature_index():
 
 
 @app.route("/creatures/new")
+@login_required
 def creature_form():
-    return render_template("creatures/new.html")
+    return render_template("creatures/new.html", form = CreatureForm())
 
 
 @app.route("/creatures/<creature_id>/", methods=["POST"])
@@ -48,7 +52,13 @@ def change_creature_stats(creature_id):
 
 @app.route("/creatures/", methods=["POST"])
 def creatures_create():
+    form = CreatureForm(request.form)
+
+    if not form.validate():
+        return render_template("creatures/new.html", form = form)
+        
     arguments = request.form.to_dict().values()
+    print(arguments)
     creature = Creature(*arguments)
     db.session().add(creature)
     db.session().commit()

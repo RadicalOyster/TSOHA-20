@@ -7,8 +7,8 @@ class Creature(db.Model):
     formula = db.Column(db.String)
     ac = db.Column(db.Integer, nullable=False)
     speed = db.Column(db.Integer)
-    swimSpeed = db.Column(db.Integer)
-    flySpeed = db.Column(db.Integer)
+    swimspeed = db.Column(db.Integer)
+    flyspeed = db.Column(db.Integer)
     cr = db.Column(db.String)
     str = db.Column(db.Integer, nullable=False)
     dex = db.Column(db.Integer, nullable=False)
@@ -23,8 +23,8 @@ class Creature(db.Model):
         self.formula = formula
         self.ac = ac
         self.speed = speed
-        self.swimSpeed = swimspeed
-        self.flySpeed = flyspeed
+        self.swimspeed = swimspeed
+        self.flyspeed = flyspeed
         self.str = strength
         self.dex = dex
         self.con = con

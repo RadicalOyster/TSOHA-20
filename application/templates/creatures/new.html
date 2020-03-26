@@ -3,6 +3,120 @@
 {% block body %}
 <h2>Add new creature</h2>
 <form method="POST" action="{{ url_for('creatures_create') }}">
+    <table>
+        <tr>
+            <td>
+                {{ form.name.label }}
+            </td>
+            <td>
+                {{ form.name }}
+            </td>
+            <td>
+                {{ form.hp.label }}
+            </td>
+            <td>
+                {{ form.hp }}
+            </td>
+            <td>
+                {{ form.formula.label }}
+            </td>
+            <td>
+                {{ form.formula }}
+            </td>
+            <td>
+                {{ form.ac.label }}
+            </td>
+            <td>
+                {{ form.ac }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.speed.label }}
+            </td>
+            <td>
+                {{ form.speed }}
+            </td>
+            <td>
+                {{ form.flyspeed.label }}
+            </td>
+            <td>
+                {{ form.flyspeed }}
+            </td>
+            <td>
+                {{ form.swimspeed.label }}
+            </td>
+            <td>
+                {{ form.swimspeed }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.strength.label }}
+            </td>
+            <td>
+                {{ form.strength }}
+            </td>
+            <td>
+                {{ form.dex.label }}
+            </td>
+            <td>
+                {{ form.dex }}
+            </td>
+            <td>
+                {{ form.con.label }}
+            </td>
+            <td>
+                {{ form.con }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.intelligence.label }}
+            </td>
+            <td>
+                {{ form.intelligence }}
+            </td>
+            <td>
+                {{ form.wis.label }}
+            </td>
+            <td>
+                {{ form.wis }}
+            </td>
+            <td>
+                {{ form.cha.label }}
+            </td>
+            <td>
+                {{ form.cha }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.cr.label }}
+            </td>
+            <td>
+                {{ form.cr }}
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Add creature"/>
+            </td>
+        </tr>
+    </table>
+    <ul>
+        {% for field in form.errors %}
+        {% for error in form.errors[field] %}
+            <div class="alert alert-error">
+                <strong style="color:red">Error in field {{field}}</strong> {{error}}
+            </div>
+        {% endfor %}
+        {% endfor %}
+      </ul>
+</form>
+<!-- <form method="POST" action="{{ url_for('creatures_create') }}">
     name:
     <input type="text" name="name"/>
     hp:
@@ -15,9 +129,9 @@
     speed:
     <input type="number" name="speed"/>
     flying speed:
-    <input type="number" name="flyingSpeed"/>
+    <input type="number" name="flyspeed"/>
     swimming speed:
-    <input type="number" name="swimming speed"/>
+    <input type="number" name="swimspeed"/>
     <br/>
     str:
     <input type="number" name="strength"/>
@@ -37,5 +151,5 @@
     <br/>
     <br/>
     <input type="submit" value="Add creature"/>
-</form>
+</form> -->
 {% endblock %}
