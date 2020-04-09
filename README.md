@@ -4,7 +4,7 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 **Current Features**
 
-* Listing of creatures in the database, including basic stats
+* Listing of creatures in the database, including basic stats and abilities
 * Adding new creatures to the database
 * Editing the ability scores of existing creatures
 
