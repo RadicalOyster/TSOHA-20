@@ -42,5 +42,5 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-__pycache__/
+application/__pycache__/
 *dnd.db
