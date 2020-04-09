@@ -16,3 +16,11 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 * [Database diagram](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/preliminary%20database%20diagram.png)
 * [User stories](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/user_stories.md)
+
+* Test user for Heroku: username: hello, password: world
+
+**Change Log**
+
+--09.04.2020--
+* Added tables for creature abilities and damage types (work in progress, some functionality is still missing) and association tables for many-to-many relationships
+* Added a navigation bar using bootstrap

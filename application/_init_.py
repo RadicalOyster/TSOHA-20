@@ -13,6 +13,9 @@ else:
 
 db = SQLAlchemy(app)
 
+from application import views
+from application.abilities import models
+
 from application.creatures import models
 from application.creatures import views
 from application.auth.forms import LoginForm

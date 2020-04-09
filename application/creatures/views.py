@@ -6,12 +6,6 @@ from application.creatures.models import Creature
 from application.creatures.forms import CreatureForm
 from application.creatures.forms import CreatureEditForm
 
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
 @app.route("/creatures/")
 def creature_index():
     return render_template("creatures/list.html", creatures=(Creature.query.all()))
