@@ -23,4 +23,5 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 --09.04.2020--
 * Added tables for creature abilities and damage types (work in progress, some functionality is still missing) and association tables for many-to-many relationships
+* Added support for viewing a creature's abilities (no in-browser functionality for managing abilities yet)
 * Added a navigation bar using bootstrap
