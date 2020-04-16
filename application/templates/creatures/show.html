@@ -56,7 +56,7 @@
         </div>
         {% endfor %}
     </table>
-    {% if current_user.is_authenticated %}
+    {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
     <h3>Edit stats</h3>
     <form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
         <table>
