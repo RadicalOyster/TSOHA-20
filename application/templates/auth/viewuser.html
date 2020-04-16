@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2 style="padding: 15px 15px 15px 15px">Viewing user {{ user.username }}</h2>
+<div style="padding: 0px 20px 25px 25px">
+    id: {{ user.id }}
+    </br>
+    Name: {{user.name}}
+    </br>
+    Username: {{ user.username }}
+    {% if "ADMIN" not in (user.roles|map(attribute='name')) %}
+    </br>
+    </br>
+    <h2>Edit User</h2>
+    <form method="POST" action="{{ url_for('update_user', user_id=user.id) }}">
+        {{ form.name.label }}
+        {{ form.name }}
+        </br>
+        {{ form.username.label }}
+        {{ form.username }}
+        </br>
+        {{ form.password.label }}
+        {{ form.password }}
+        </br>
+        <input type="submit" value="Update user" />
+    </form>
+
+    <br/>
+    <br/>
+    <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}">
+        <input type=hidden value="{{ user.id }}" name=user_to_delete>
+        <input type="submit" value="Delete user"/>
+    </form>
+    {% endif %}
+    </br>
+    </br>
+    <a href="{{ url_for('admin_panel') }}">Back to user list</a>
+</div>
+{% endblock %}

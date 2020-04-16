@@ -1,12 +1,14 @@
 **Dungeons and Dragons Database**
 
-The purpose of this application is to be able to quickly add and retrieve information about the tabletop game Dungeons and Dragons 5th Edition. This includes at least items, equipment, spells and creatures. Additionally, users should be able to add specific entries to a list of personal favorites for quick access and filter information based on various criteria such as an item's properties.
+The purpose of this application is to be able to quickly add and retrieve information about creatures from the tabletop game Dungeons and Dragons 5th Edition. This includes basic statistics such as their ability scores and abilities.
 
 **Current Features**
 
 * Listing of creatures in the database, including basic stats and abilities
-* Adding new creatures to the database
+* Adding new creatures to the database (admins only)
+* Individual pages for creatures with additional information
 * Editing the ability scores of existing creatures
+* Some user management features for admins (deleting users and editing their details)
 
 **App in Heroku**
 
@@ -19,7 +21,22 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 * Test user for Heroku: username: hello, password: world
 
+**Features to add**
+
+* Better security (encoded passwords, only user should be able to change their own password)
+* Implementing attacks with multiple damage rolls (requires restructuring of the database)
+* Allowing users to manage their own accounts (eg. change or reset their password)
+* Allowing users to add creatures to a list of favorites
+* Filtering creatures by different criteria
+* Refined interface
+* More robust creature statistics such as alignment, saving throws and spells
+
 **Change Log**
+
+--16.04.2020--
+* Added support for user roles and role-specific functionality
+* Added basic user management for admins (adding new users not implemented yet)
+* Updated documentation
 
 --09.04.2020--
 * Added tables for creature abilities and damage types (work in progress, some functionality is still missing) and association tables for many-to-many relationships

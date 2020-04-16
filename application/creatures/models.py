@@ -11,12 +11,12 @@ class Creature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     hp = db.Column(db.Integer, nullable=False)
-    formula = db.Column(db.String)
+    formula = db.Column(db.String(40))
     ac = db.Column(db.Integer, nullable=False)
     speed = db.Column(db.Integer)
     swimspeed = db.Column(db.Integer)
     flyspeed = db.Column(db.Integer)
-    cr = db.Column(db.String)
+    cr = db.Column(db.String(20))
     str = db.Column(db.Integer, nullable=False)
     dex = db.Column(db.Integer, nullable=False)
     con = db.Column(db.Integer, nullable=False)
@@ -55,8 +55,5 @@ class Creature(db.Model):
         response = []
         for row in res:
             response.append({"id":row[0], "name":row[1]})
-        print('\n\n\n\n')
-        print(response)
-        print('\n\n\n\n')
             
         return response

@@ -8,7 +8,7 @@ class AttackDamageType(db.Model):
 
 class Ability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(40), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     attack_id = db.Column(db.Integer, db.ForeignKey('attack.id'))
     attack = db.relationship("Attack", uselist=False, backref="ability")
@@ -16,11 +16,11 @@ class Ability(db.Model):
 
 class Attack(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    damageFormula = db.Column(db.String(20), nullable=False)
+    damageFormula = db.Column(db.String(40), nullable=False)
     toHit = db.Column(db.Integer, nullable=False)
     damageType = db.relationship("DamageType", secondary="Attack_DamageType", backref='damage_type')
 
 class DamageType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(20), nullable=False)
+    type = db.Column(db.String(40), nullable=False)
     attack = db.relationship("Attack", secondary="Attack_DamageType")

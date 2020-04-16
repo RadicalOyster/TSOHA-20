@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h2 style="padding: 15px 15px 15px 15px">
+        Manage Users
+    </h2>
+    {% for user in users %}
+    <div style="padding: 0px 20px 25px 25px">
+        <a href="{{ url_for('user_view', user_id = user.id) }}">{{ user.username }}</a>
+    </div>
+    {% endfor %}
+{% endblock %}

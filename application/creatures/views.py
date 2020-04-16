@@ -1,10 +1,10 @@
 from flask import redirect, render_template, request, url_for
-from flask_login import login_required
 
-from application._init_ import app, db
+from application._init_ import app, db, login_required
 from application.creatures.models import Creature
 from application.creatures.forms import CreatureForm
 from application.creatures.forms import CreatureEditForm
+from application.auth.models import User
 
 @app.route("/creatures/")
 def creature_index():
@@ -12,13 +12,22 @@ def creature_index():
 
 
 @app.route("/creatures/new")
-@login_required
+@login_required(role="ADMIN")
 def creature_form():
     return render_template("creatures/new.html", form = CreatureForm())
 
 @app.route("/creatures/<creature_id>/", methods=["GET"])
 def show_creature(creature_id):
     creature = Creature.query.get(creature_id)
+    test = User.query.get(1)
+    print("\n\n\n\n\n\n\n\n")
+    print(test.roles)
+    for role in test.roles:
+        print(role.name)
+    print("\n\n\n\n\n\n\n\n")
+    for ability in creature.abilities:
+        print(ability.name)
+    print("\n\n\n\n\n\n\n\n")
     if creature is not None:
         return render_template("creatures/show.html", creature=creature, form=CreatureEditForm())
     return redirect(url_for("creature_index"))
