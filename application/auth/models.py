@@ -7,6 +7,12 @@ class AccountRole(db.Model):
    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
    user_id = db.Column(db.Integer, db.ForeignKey('account.id'))
 
+class AccountCreature(db.Model):
+    _tablename_ = "account_creature"
+    id = db.Column(db.Integer, primary_key=True)
+    creature_id = db.Column(db.Integer, db.ForeignKey('creature.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('account.id'))
+
 class User(db.Model):
 
     __tablename__ = "account"
@@ -19,6 +25,7 @@ class User(db.Model):
     username = db.Column(db.String(144), nullable=False)
     password = db.Column(db.String(144), nullable=False)
     roles = db.relationship("Role", secondary="account_role", backref='role', lazy=True)
+    creatures = db.relationship("Creature", secondary="account_creature", backref='creature', lazy=True)
 
     def __init__(self, name, username, password, roles):
         self.name = name

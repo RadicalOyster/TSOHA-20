@@ -1,6 +1,9 @@
 from flask import Flask
 app = Flask(__name__)
 
+#load static files
+app.static_folder = 'static'
+
 # database connectivity and ORM
 from flask_sqlalchemy import SQLAlchemy
 

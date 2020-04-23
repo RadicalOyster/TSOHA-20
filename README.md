@@ -32,9 +32,13 @@ The purpose of this application is to be able to quickly add and retrieve inform
 * Allowing users to add creatures to a list of favorites
 * Filtering creatures by different criteria
 * Refined interface
-* More robust creature statistics such as alignment, saving throws and spells
+* More robust creature statistics such as alignment and spells
 
 **Change Log**
+
+--23.04.2020--
+* Restructured parts of the database and added support for saving throws and skills for creatures (front-end not yet fully updated to support this)
+* Added custom CSS to change the appearance of bootstrap elements
 
 --16.04.2020--
 * Added support for user roles and role-specific functionality

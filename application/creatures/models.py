@@ -23,9 +23,43 @@ class Creature(db.Model):
     int = db.Column(db.Integer, nullable=False)
     wis = db.Column(db.Integer, nullable=False)
     cha = db.Column(db.Integer, nullable=False)
-    abilities = db.relationship("Ability", secondary="Creature_Ability", backref='ability')
+    proficiency = db.Column(db.Integer, nullable=False)
+    strsav = db.Column(db.Boolean, nullable=False)
+    dexsav = db.Column(db.Boolean, nullable=False)
+    consav = db.Column(db.Boolean, nullable=False)
+    intsav = db.Column(db.Boolean, nullable=False)
+    wissav = db.Column(db.Boolean, nullable=False)
+    chasav = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, cr):
+    athletics = db.Column(db.Boolean, nullable=False)
+
+    acrobatics = db.Column(db.Boolean, nullable=False)
+    soh = db.Column(db.Boolean, nullable=False)
+    stealth = db.Column(db.Boolean, nullable=False)
+    
+    arcana = db.Column(db.Boolean, nullable=False)
+    history = db.Column(db.Boolean, nullable=False)
+    investigation = db.Column(db.Boolean, nullable=False)
+    nature = db.Column(db.Boolean, nullable=False)
+    religion = db.Column(db.Boolean, nullable=False)
+
+    animal = db.Column(db.Boolean, nullable=False)
+    insight = db.Column(db.Boolean, nullable=False)
+    medicine = db.Column(db.Boolean, nullable=False)
+    perception = db.Column(db.Boolean, nullable=False)
+    survival = db.Column(db.Boolean, nullable=False)
+
+    deception = db.Column(db.Boolean, nullable=False)
+    intimidation = db.Column(db.Boolean, nullable=False)
+    performance = db.Column(db.Boolean, nullable=False)
+    persuasion = db.Column(db.Boolean, nullable=False)
+
+    abilities = db.relationship("Ability", secondary="Creature_Ability", backref='ability')
+    users = db.relationship("User", secondary="account_creature")
+
+    def __init__(self, name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, strsav, dexsav, consav, intsav, wissav, chasav, cr, proficiency,
+    athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception, intimidation, performance,
+    persuasion):
         self.name = name
         self.hp = hp
         self.formula = formula
@@ -39,7 +73,33 @@ class Creature(db.Model):
         self.int = intelligence
         self.wis = wis
         self.cha = cha
+        self.strsav = strsav
+        self.dexsav = dexsav
+        self.consav = consav
+        self.intsav = intsav
+        self.wissav = wissav
+        self.chasav = chasav
         self.cr = str(cr)
+        self.proficiency = proficiency
+
+        self.athletics = athletics
+        self.acrobatics = acrobatics
+        self.soh = soh
+        self.stealth = stealth
+        self. arcana = arcana
+        self.history = history
+        self.investigation = investigation
+        self.nature = nature
+        self.religion = religion
+        self.animal = animal
+        self.insight = insight
+        self.medicine = medicine
+        self.perception = perception
+        self.survival = survival
+        self.deception = deception
+        self.intimidation = intimidation
+        self.performance = performance
+        self.persuasion = persuasion
     
     @staticmethod
     def find_creatures_with_damage_type(damagetype=''):

@@ -28,6 +28,9 @@ def show_creature(creature_id):
     for ability in creature.abilities:
         print(ability.name)
     print("\n\n\n\n\n\n\n\n")
+
+    
+
     if creature is not None:
         return render_template("creatures/show.html", creature=creature, form=CreatureEditForm())
     return redirect(url_for("creature_index"))
@@ -104,9 +107,149 @@ def creatures_create():
     if not form.validate():
         return render_template("creatures/new.html", form = form)
         
-    arguments = request.form.to_dict().values()
+    arguments = request.form.to_dict()
     print(arguments)
-    creature = Creature(*arguments)
+
+    name = arguments["name"]
+    hp = arguments["hp"]
+    formula = arguments["formula"]
+    ac = arguments["ac"]
+    speed = arguments["speed"]
+    flyspeed = arguments["flyspeed"]
+    swimspeed = arguments["swimspeed"]
+    strength = arguments["strength"]
+    dex = arguments["dex"]
+    con = arguments["con"]
+    intelligence = arguments["intelligence"]
+    wis = arguments["wis"]
+    cha = arguments["cha"]
+    cr = arguments["cr"]
+    proficiency = arguments["proficiency"]
+
+    if "strsav" in arguments:
+        strsav = True
+    else:
+        strsav = False
+
+    if "dexsav" in arguments:
+        dexsav = True
+    else:
+        dexsav = False
+    
+    if "consav" in arguments:
+        consav = True
+    else:
+        consav = False
+    
+    if "intsav" in arguments:
+        intsav = True
+    else:
+        intsav = False
+    
+    if "wissav" in arguments:
+        wissav = True
+    else:
+        wissav = False
+    
+    if "chasav" in arguments:
+        chasav = True
+    else:
+        chasav = True
+    
+    if "athletics" in arguments:
+        athletics = True
+    else:
+        athletics = False
+    
+    if "acrobatics" in arguments:
+        acrobatics = True
+    else:
+        acrobatics = False
+    
+    if "soh" in arguments:
+        soh = True
+    else:
+        soh = False
+
+    if "stealth" in arguments:
+        stealth = True
+    else:
+        stealth = False
+    
+    if "arcana" in arguments:
+        arcana = True
+    else:
+        arcana = False
+    
+    if "history" in arguments:
+        history = True
+    else:
+        history = False
+    
+    if "investigation" in arguments:
+        investigation = True
+    else:
+        investigation = False
+    
+    if "nature" in arguments:
+        nature = True
+    else:
+        nature = False
+    
+    if "religion" in arguments:
+        religion = True
+    else:
+        religion = False
+    
+    if "animal" in arguments:
+        animal = True
+    else:
+        animal = False
+    
+    if "insight" in arguments:
+        insight = True
+    else:
+        insight = False
+    
+    if "medicine" in arguments:
+        medicine = True
+    else:
+        medicine = False
+    
+    if "perception" in arguments:
+        perception = True
+    else:
+        perception = False
+    
+    if "surival" in arguments:
+        survival = True
+    else:
+        survival = False
+    
+    if "deception" in arguments:
+        deception = True
+    else:
+        deception = False
+    
+    if "intimidation" in arguments:
+        intimidation = True
+    else:
+        intimidation = False
+    
+    if "performance" in arguments:
+        performance = True
+    else:
+        performance = False
+    
+    if "persuasion" in arguments:
+        persuasion = True
+    else:
+        persuasion = False
+
+    creature = Creature(name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, strsav, dexsav, consav, intsav, wissav, chasav, cr, proficiency,
+    athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception,
+    intimidation, performance, persuasion)
+
     db.session().add(creature)
     db.session().commit()
     return redirect(url_for("creature_index"))
