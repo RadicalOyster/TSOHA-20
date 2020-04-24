@@ -29,10 +29,8 @@ def show_creature(creature_id):
         print(ability.name)
     print("\n\n\n\n\n\n\n\n")
 
-    
-
     if creature is not None:
-        return render_template("creatures/show.html", creature=creature, form=CreatureEditForm())
+        return render_template("creatures/show.html", creature=creature, modifiers=creature.getSkillModifiers, form=CreatureEditForm())
     return redirect(url_for("creature_index"))
 
 

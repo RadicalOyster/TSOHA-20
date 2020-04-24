@@ -101,6 +101,16 @@ class Creature(db.Model):
         self.performance = performance
         self.persuasion = persuasion
     
+    def getSkillModifiers(self):
+        mods = {}
+        mods["str"] = int((self.str - 10)/2)
+        mods["dex"] = int((self.dex - 10)/2)
+        mods["con"] = int((self.con - 10)/2)
+        mods["int"] = int((self.int - 10)/2)
+        mods["wis"] = int((self.wis - 10)/2)
+        mods["cha"] = int((self.cha - 10)/2)
+        return mods
+    
     @staticmethod
     def find_creatures_with_damage_type(damagetype=''):
         stmt = text("SELECT Creature.id, Creature.name FROM Creature"
