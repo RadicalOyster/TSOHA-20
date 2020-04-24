@@ -36,6 +36,10 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 **Change Log**
 
+--24.04.2020--
+* Updated view for individual creatures to support saving throws and skills
+* Updated the creature edit form so all of the creature's statistics can be modified
+
 --23.04.2020--
 * Restructured parts of the database and added support for saving throws and skills for creatures (front-end not yet fully updated to support this)
 * Added custom CSS to change the appearance of bootstrap elements

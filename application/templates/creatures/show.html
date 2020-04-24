@@ -31,21 +31,38 @@
 
         <tr style="color:maroon">
             <th>Speed</th>
+            {% if creature.flyspeed|int != 0 %}
             <th>Fly</th>
+            {% endif %}
+            {% if creature.swimspeed|int != 0 %}
             <th>Swim</th>
+            {% endif %}
         </tr>
 
         <tr>
             <td align="center"> {{ creature.speed }} ft.</td>
+            {% if creature.flyspeed|int != 0 %}
             <td align="center"> {{ creature.flyspeed }} ft.</td>
+            {% endif %}
+            {% if creature.flyspeed|int != 0 %}
             <td align="center"> {{ creature.swimspeed }} ft.</td>
+            {% endif %}
         </tr>
     </table>
     <br/>
-    <div style=color:maroon><b>Skills</b></div>
-    
+    <div style=color:maroon><b>Saving Throws</b>
+        {% for save, savemod in saves.items() %}
+        {{ save }} +{{ savemod }}.
+        {% endfor %}
+    </div>
+    <br/>
+    <div style=color:maroon><b>Skills</b>
+        {% for skill, mod in skills.items() %}
+        {{ skill }} +{{ mod }}.
+        {% endfor %}
+    </div>
     <table>
-        <br/>
+        <br />
         <tr>
             <h2 style="color:maroon">Abilities</h2>
         </tr>
@@ -60,8 +77,19 @@
         {% endfor %}
     </table>
     {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
-    <h3>Edit stats</h3>
-    <form method="POST" action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
+
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editform" aria-expanded="false"
+        aria-controls="collapseExample">
+        Edit stats
+    </button>
+
+    <div class="collapse" id="collapseExample">
+        <form>
+            <input type="text">
+        </form>
+    </div>
+    <form class="collapse" method="POST" id="editform"
+        action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
         <table>
             <tr>
                 <td>
@@ -156,22 +184,128 @@
                 <td>
                     {{ form.cr }}
                 </td>
-            </tr>
-            <tr>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="Update stats" />
+                <td>
+                    {{ form.proficiency.label }}
+                </td>
+                <td>
+                    {{ form.proficiency }}
                 </td>
             </tr>
         </table>
+        <h2>Saving Throws</h2>
+        <table>
+            <tr>
+                <td>
+                    {{ form.strsav.label }}
+                    {{ form.strsav }}
+                </td>
+                <td>
+                    {{ form.dexsav.label }}
+                    {{ form.dexsav }}
+                </td>
+                <td>
+                    {{ form.consav.label }}
+                    {{ form.consav }}
+                </td>
+                <td>
+                    {{ form.intsav.label }}
+                    {{ form.intsav }}
+                </td>
+                <td>
+                    {{ form.wissav.label }}
+                    {{ form.wissav }}
+                </td>
+                <td>
+                    {{ form.chasav.label }}
+                    {{ form.chasav }}
+                </td>
+            </tr>
+        </table>
+        <h2>Skill Proficiencies</h2>
+        <table>
+            <tr valign="middle">
+                <td>
+                    {{ form.athletics.label }}
+                    {{ form.athletics }}
+                </td>
+                <td>
+                    {{ form.acrobatics.label }}
+                    {{ form.acrobatics }}
+                </td>
+                <td>
+                    {{ form.soh.label }}
+                    {{ form.soh }}
+                </td>
+                <td>
+                    {{ form.stealth.label }}
+                    {{ form.stealth }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.arcana.label }}
+                    {{ form.arcana }}
+                </td>
+                <td>
+                    {{ form.history.label }}
+                    {{ form.history }}
+                </td>
+                <td>
+                    {{ form.investigation.label }}
+                    {{ form.investigation }}
+                </td>
+                <td>
+                    {{ form.nature.label }}
+                    {{ form.nature }}
+                </td>
+                <td>
+                    {{ form.religion.label }}
+                    {{ form.religion }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.animal.label }}
+                    {{ form.animal }}
+                </td>
+                <td>
+                    {{ form.insight.label }}
+                    {{ form.insight }}
+                </td>
+                <td>
+                    {{ form.medicine.label }}
+                    {{ form.medicine }}
+                </td>
+                <td>
+                    {{ form.perception.label }}
+                    {{ form.perception }}
+                </td>
+                <td>
+                    {{ form.survival.label }}
+                    {{ form.survival }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ form.deception.label }}
+                    {{ form.deception }}
+                </td>
+                <td>
+                    {{ form.intimidation.label }}
+                    {{ form.intimidation }}
+                </td>
+                <td>
+                    {{ form.performance.label }}
+                    {{ form.performance }}
+                </td>
+                <td>
+                    {{ form.persuasion.label }}
+                    {{ form.persuasion }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Modify creature" />
     </form>
-    <form method="POST" action="{{ url_for('delete_creature', creature_id=creature.id) }}">
-        <input type=hidden value="{{ creature.id }}" name=creature_to_delete>
-        <input type="submit" value="Delete Creature"/>
-    </form>
-</div>
-<div>
     <ul>
         {% for field in form.errors %}
         {% for error in form.errors[field] %}
@@ -181,6 +315,9 @@
         {% endfor %}
         {% endfor %}
     </ul>
-</div>
-{% endif %}
-{% endblock %}
+    <form method="POST" action="{{ url_for('delete_creature', creature_id=creature.id) }}">
+        <input type=hidden value="{{ creature.id }}" name=creature_to_delete>
+        <input type="submit" value="Delete Creature"/>
+    </form>
+    {% endif %}
+    {% endblock %}

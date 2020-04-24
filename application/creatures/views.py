@@ -30,18 +30,19 @@ def show_creature(creature_id):
     print("\n\n\n\n\n\n\n\n")
 
     if creature is not None:
-        return render_template("creatures/show.html", creature=creature, modifiers=creature.getSkillModifiers, form=CreatureEditForm())
+        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm())
     return redirect(url_for("creature_index"))
 
 
 @app.route("/creatures/<creature_id>/", methods=["POST"])
 def change_creature_stats(creature_id):
     form = CreatureEditForm(request.form)
+    creature = Creature.query.get(creature_id)
 
     if not form.validate():
-        return render_template("creatures/show.html", form=form, creature=Creature.query.filter_by(id=creature_id).first())
+        return render_template("creatures/show.html", creature=Creature.query.filter_by(id=creature_id).first(), skills=creature.getProficiencies(), form=form)
 
-    creature = Creature.query.get(creature_id)
+    arguments = request.form.to_dict()
     name = request.form.get('name')
     hp = request.form.get('hp')
     formula = request.form.get('formula')
@@ -85,6 +86,126 @@ def change_creature_stats(creature_id):
         creature.cha = cha
     if cr is not '':
         creature.cr = cr
+
+    if "strsav" in arguments:
+        creature.strsav = True
+    else:
+        creature.strsav = False
+
+    if "dexsav" in arguments:
+        creature.dexsav = True
+    else:
+        creature.dexsav = False
+    
+    if "consav" in arguments:
+        creature.consav = True
+    else:
+        creature.consav = False
+    
+    if "intsav" in arguments:
+        creature.intsav = True
+    else:
+        creature.intsav = False
+    
+    if "wissav" in arguments:
+        creature.wissav = True
+    else:
+        creature.wissav = False
+    
+    if "chasav" in arguments:
+        creature.chasav = True
+    else:
+        creature.chasav = True
+    
+    if "athletics" in arguments:
+        creature.athletics = True
+    else:
+        creature.athletics = False
+    
+    if "acrobatics" in arguments:
+        creature.acrobatics = True
+    else:
+        creature.acrobatics = False
+    
+    if "soh" in arguments:
+        creature.soh = True
+    else:
+        creature.soh = False
+
+    if "stealth" in arguments:
+        creature.stealth = True
+    else:
+        creature.stealth = False
+    
+    if "arcana" in arguments:
+        creature.arcana = True
+    else:
+        creature.arcana = False
+    
+    if "history" in arguments:
+        creature.history = True
+    else:
+        creature.history = False
+    
+    if "investigation" in arguments:
+        creature.investigation = True
+    else:
+        creature.investigation = False
+    
+    if "nature" in arguments:
+        creature.nature = True
+    else:
+        creature.nature = False
+    
+    if "religion" in arguments:
+        creature.religion = True
+    else:
+        creature.religion = False
+    
+    if "animal" in arguments:
+        creature.animal = True
+    else:
+        creature.animal = False
+    
+    if "insight" in arguments:
+        creature.insight = True
+    else:
+        creature.insight = False
+    
+    if "medicine" in arguments:
+        creature.medicine = True
+    else:
+        creature.medicine = False
+    
+    if "perception" in arguments:
+        creature.perception = True
+    else:
+        creature.perception = False
+    
+    if "surival" in arguments:
+        creature.survival = True
+    else:
+        creature.survival = False
+    
+    if "deception" in arguments:
+        creature.deception = True
+    else:
+        creature.deception = False
+    
+    if "intimidation" in arguments:
+        creature.intimidation = True
+    else:
+        creature.intimidation = False
+    
+    if "performance" in arguments:
+        creature.performance = True
+    else:
+        creature.performance = False
+    
+    if "persuasion" in arguments:
+        creature.persuasion = True
+    else:
+        creature.persuasion = False
     
     db.session().commit()
 

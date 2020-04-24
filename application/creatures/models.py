@@ -1,11 +1,26 @@
 from application._init_ import db
 from sqlalchemy.sql import text
 
+def Modifier(creature, skill):
+    ret = -6
+    if skill in ["STR", "Athletics"]:
+        ret = int((creature.str - 10)/2)
+    elif skill in ["DEX", "Acrobatics", "Sleight of Hand", "Stealth"]:
+        ret = int((creature.dex - 10)/2)
+    elif skill in ["INT", "Arcana", "History", "Investigation", "Nature", "Religion"]:
+        ret = int((creature.int - 10)/2)
+    elif skill in ["WIS", "Animal Hnadling", "Insight", "Medicine", "Perception", "Survival"]:
+        ret = int((creature.wis - 10)/2)
+    elif skill in ["CHA", "Deception", "Intimidation", "Performance", "Persuasion"]:
+        ret = int((creature.cha - 10)/2)
+    return ret
+
 class CreatureAbility(db.Model):
    __tablename__ = "Creature_Ability"
    id = db.Column(db.Integer, primary_key=True)
    creature_id = db.Column(db.Integer, db.ForeignKey('creature.id'))
    ability_id = db.Column(db.Integer, db.ForeignKey('ability.id'))
+
 
 class Creature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -13,7 +28,7 @@ class Creature(db.Model):
     hp = db.Column(db.Integer, nullable=False)
     formula = db.Column(db.String(40))
     ac = db.Column(db.Integer, nullable=False)
-    speed = db.Column(db.Integer)
+    speed = db.Column(db.Integer, nullable=False)
     swimspeed = db.Column(db.Integer)
     flyspeed = db.Column(db.Integer)
     cr = db.Column(db.String(20))
@@ -36,7 +51,7 @@ class Creature(db.Model):
     acrobatics = db.Column(db.Boolean, nullable=False)
     soh = db.Column(db.Boolean, nullable=False)
     stealth = db.Column(db.Boolean, nullable=False)
-    
+
     arcana = db.Column(db.Boolean, nullable=False)
     history = db.Column(db.Boolean, nullable=False)
     investigation = db.Column(db.Boolean, nullable=False)
@@ -54,7 +69,8 @@ class Creature(db.Model):
     performance = db.Column(db.Boolean, nullable=False)
     persuasion = db.Column(db.Boolean, nullable=False)
 
-    abilities = db.relationship("Ability", secondary="Creature_Ability", backref='ability')
+    abilities = db.relationship(
+        "Ability", secondary="Creature_Ability", backref='ability')
     users = db.relationship("User", secondary="account_creature")
 
     def __init__(self, name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, strsav, dexsav, consav, intsav, wissav, chasav, cr, proficiency,
@@ -86,7 +102,7 @@ class Creature(db.Model):
         self.acrobatics = acrobatics
         self.soh = soh
         self.stealth = stealth
-        self. arcana = arcana
+        self.arcana = arcana
         self.history = history
         self.investigation = investigation
         self.nature = nature
@@ -100,17 +116,50 @@ class Creature(db.Model):
         self.intimidation = intimidation
         self.performance = performance
         self.persuasion = persuasion
+
+    def getProficiencies(self):
+        skills = {}
+        proficiencies = {}
+        skills["Athletics"] = self.athletics
+        skills["Acrobatics"] = self.acrobatics 
+        skills["Sleight of Hand"] = self.soh
+        skills["Stealth"] = self.stealth
+        skills["Arcana"] = self.arcana
+        skills["History"] = self.history
+        skills["Investigation"] = self.investigation
+        skills["Nature"] = self.nature
+        skills["Religion"] = self.religion
+        skills["Animal Handling"] = self.animal
+        skills["Insight"] = self.insight
+        skills["Medicine"] = self.medicine
+        skills["Perception"] = self.perception
+        skills["Survival"] = self.survival
+        skills["Deception"] = self.deception
+        skills["Intimidation"] = self.intimidation
+        skills["Performance"] = self.performance
+        skills["Persuasion"] = self.persuasion
+
+        for skill, prof in skills.items():
+            if prof == True:
+                proficiencies[skill] = Modifier(self, skill) + self.proficiency
+        return proficiencies
     
-    def getSkillModifiers(self):
-        mods = {}
-        mods["str"] = int((self.str - 10)/2)
-        mods["dex"] = int((self.dex - 10)/2)
-        mods["con"] = int((self.con - 10)/2)
-        mods["int"] = int((self.int - 10)/2)
-        mods["wis"] = int((self.wis - 10)/2)
-        mods["cha"] = int((self.cha - 10)/2)
-        return mods
-    
+    def getSavingThrows(self):
+        saves = {}
+        saveproficiencies = {}
+
+        saves["STR"] = self.strsav
+        saves["DEX"] = self.dexsav
+        saves["CON"] = self.consav
+        saves["INT"] = self.intsav
+        saves["WIS"] = self.wissav
+        saves["CHA"] = self.chasav
+
+        for save, prof in saves.items():
+            if prof == True:
+                saveproficiencies[save] = Modifier(self, save) + self.proficiency
+        return saveproficiencies
+
     @staticmethod
     def find_creatures_with_damage_type(damagetype=''):
         stmt = text("SELECT Creature.id, Creature.name FROM Creature"

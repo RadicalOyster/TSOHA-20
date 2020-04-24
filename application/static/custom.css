@@ -140,3 +140,8 @@
     color: #900d00;
     background-color: #d4cc69;
   }
+
+  .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: rgb(46, 27, 22) !important;
+    border-color: black !important;
+  }
