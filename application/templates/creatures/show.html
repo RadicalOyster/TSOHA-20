@@ -69,10 +69,10 @@
         {% for ability in creature.abilities %}
         <div style="background-color: #ebe1c7" style="width: 1500px">
             <b>{{ability.name}}.</b> <i>{{ability.description}}</i>
-            {% if ability.attack %}
-            : {{ability.attack.toHit}} to hit.
-            <i>On hit: </i> {{ability.attack.damageFormula}} {{ability.attack.damageType[0].type}} damage.
-            {% endif %}
+            {% for attack in ability.attacks %}
+            : +{{ ability.toHit }} to hit.
+            <i>On hit: </i> {{ attack.damageFormula }} {{ attack.damageType.type }} damage.
+        {% endfor %}
         </div>
         {% endfor %}
     </table>
