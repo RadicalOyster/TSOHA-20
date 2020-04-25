@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{{ error }}
+<form method="POST" action="{{ url_for('signup') }}">
+    <table>
+        <tr>
+            <td>
+                {{ form.name.label }}
+            </td>
+            <td>
+                {{ form.name }}
+            </td>
+            {% for error in form.errors["name"] %}
+            <td>
+                <a class="alert alert-error">
+                    <strong style="color:red">Error: </strong> {{error}}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>
+                {{ form.username.label }}
+            </td>
+            <td>
+                {{ form.username }}
+            </td>
+            {% for error in form.errors["username"] %}
+            <td>
+                <a class="alert alert-error">
+                    <strong style="color:red">Error: </strong> {{error}}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>
+                {{ form.password.label }}
+            </td>
+            <td>
+                {{ form.password }}
+            </td>
+            {% for error in form.errors["password"] %}
+            <td>
+                <a class="alert alert-error">
+                    <strong style="color:red">Error: </strong> {{error}}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td>
+                {{ form.repeat.label }}
+            </td>
+            <td>
+                {{ form.repeat }}
+            </td>
+            {% for error in form.errors["repeat"] %}
+            <td>
+                <a class="alert alert-error">
+                    <strong style="color:red">Error: </strong> {{error}}
+                </a>
+            </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Login" />
+            </td>
+        </tr>
+</form>
+{% endblock %}

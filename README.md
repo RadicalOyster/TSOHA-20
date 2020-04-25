@@ -36,6 +36,10 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 **Change Log**
 
+--25.04.2020--
+* Added ability to create new users
+* Fixed a bug with creatures' CON and Animal Handling modifiers not displaying properly
+
 --24.04.2020--
 * Updated view for individual creatures to support saving throws and skills
 * Updated the creature edit form so all of the creature's statistics can be modified

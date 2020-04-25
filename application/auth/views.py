@@ -1,40 +1,45 @@
 from flask import render_template, request, redirect, request, url_for
 from flask_login import login_user, logout_user
-  
-from application._init_ import app, login_required, db
-from application.auth.models import User
-from application.auth.forms import LoginForm, UserEditForm
 
-@app.route("/auth/login", methods = ["GET", "POST"])
+from application._init_ import app, login_required, db, current_user
+from application.auth.models import User, Role
+from application.auth.forms import LoginForm, UserEditForm, SignupForm
+
+
+@app.route("/auth/login", methods=["GET", "POST"])
 def auth_login():
     if request.method == "GET":
-        return render_template("auth/loginform.html", form = LoginForm())
+        return render_template("auth/loginform.html", form=LoginForm())
 
     form = LoginForm(request.form)
 
-    user = User.query.filter_by(username=form.username.data, password=form.password.data).first()
+    user = User.query.filter_by(
+        username=form.username.data, password=form.password.data).first()
     if not user:
-        return render_template("auth/loginform.html", form = form,
-                                error = "No such username or password")
-
+        return render_template("auth/loginform.html", form=form,
+                               error="No such username or password")
 
     login_user(user)
     return redirect(url_for("index"))
+
 
 @app.route("/auth/logout")
 def auth_logout():
     logout_user()
     return redirect(url_for("index"))
 
+
 @app.route("/auth/admin")
 @login_required(role="ADMIN")
 def admin_panel():
     return render_template("auth/adminpanel.html", users=User.query.all())
 
+
 @app.route("/auth/admin/user/<user_id>/")
 @login_required(role="ADMIN")
 def user_view(user_id):
     return render_template("auth/viewuser.html", user=User.query.get(user_id), form=UserEditForm())
+
 
 @app.route("/auth/admin/user/<user_id>/", methods=["POST"])
 @login_required(role="ADMIN")
@@ -45,13 +50,6 @@ def update_user(user_id):
         return render_template("auth/viewuser.html", form=form, user=User.query.get(user_id))
 
     user = User.query.get(user_id)
-
-    print("\n\n\n\n\n\n\n\n")
-    print(user.name)
-    print(user.username)
-    print(user.password)
-    print("\n\n\n\n\n\n\n\n")
-
     name = request.form.get('name')
     username = request.form.get('username')
     password = request.form.get('password')
@@ -64,8 +62,9 @@ def update_user(user_id):
 
     db.session().add(user)
     db.session().commit()
-    
+
     return redirect(url_for("user_view", user_id=user_id))
+
 
 @app.route("/auth/admin/user/delete/<user_id>/", methods=["POST"])
 @login_required(role="ADMIN")
@@ -74,3 +73,43 @@ def delete_user(user_id):
     db.session().delete(user)
     db.session().commit()
     return redirect(url_for("admin_panel"))
+
+
+@app.route("/auth/signup/", methods=["GET"])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+    return render_template("auth/signup.html", form=SignupForm())
+
+
+@app.route("/auth/signup/", methods=["POST"])
+def create_user():
+    if current_user.is_authenticated:
+        return redirect(url_for("index"))
+    form = SignupForm(request.form)
+    if not form.validate():
+        returnform = SignupForm(request.form)
+        returnform.password.data = ""
+        returnform.repeat.data = ""
+        return render_template("auth/signup.html", form=returnform)
+
+    name = request.form.get('name')
+    username = request.form.get('username')
+    password = request.form.get('password')
+    user = User(name, username, password)
+    print("\n\n\n")
+    print(Role.find_role_by_name("USER")[0])
+    print(Role.find_role_by_name("USER")[1])
+    print(Role.find_role_by_name("USER")[2])
+    print("\n\n\n")
+    test = Role.find_role_by_name("USER")
+    test2 = Role.query.get(test[0]["id"])
+    user.roles.append(test2)
+    print(test2)
+    print("\n\n\n")
+    print(user.roles)
+    print("\n\n\n")
+    db.session().add(user)
+    db.session().commit()
+
+    return redirect(url_for("auth_login"))

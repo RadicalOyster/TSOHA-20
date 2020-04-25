@@ -9,10 +9,12 @@ def Modifier(creature, skill):
         ret = int((creature.dex - 10)/2)
     elif skill in ["INT", "Arcana", "History", "Investigation", "Nature", "Religion"]:
         ret = int((creature.int - 10)/2)
-    elif skill in ["WIS", "Animal Hnadling", "Insight", "Medicine", "Perception", "Survival"]:
+    elif skill in ["WIS", "Animal Handling", "Insight", "Medicine", "Perception", "Survival"]:
         ret = int((creature.wis - 10)/2)
     elif skill in ["CHA", "Deception", "Intimidation", "Performance", "Persuasion"]:
         ret = int((creature.cha - 10)/2)
+    elif skill in ["CON"]:
+        ret = int((creature.con - 10)/2)
     return ret
 
 class CreatureAbility(db.Model):
