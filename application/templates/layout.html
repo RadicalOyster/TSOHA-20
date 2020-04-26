@@ -32,7 +32,7 @@
                 {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
                 <a class="nav-link" href="{{ url_for('admin_panel') }} " style="color:maroon">Admin panel</a>
                 {% endif %}
-                {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
+                {% if "USER" in (current_user.roles|map(attribute='name')) %}
                 <a class="nav-link" href="{{ url_for('show_user', user_id = current_user.id) }}" style="color:maroon">Account</a>
                 {% endif %}
                 {{ current_user.name }} logged in -- &nbsp <a style="color:maroon" href="{{ url_for('auth_logout') }}">
