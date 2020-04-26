@@ -2,7 +2,7 @@
 
 {% block body %}
 {% for creature in creatures %}
-<div style="background-color: #ebe1c7" style="width: 1500px">
+<div style="background-color: #ebe1c7;padding: 0px 0px 5px 15px;width:500px">
     <h2><a style="color:maroon" href="{{ url_for('show_creature', creature_id = creature.id) }}">{{creature.name}}</a></h2>
     <b>Armor Class:</b> {{ creature.ac }}
     <br/>
@@ -11,7 +11,7 @@
     <b>Challenge: </b>{{ creature.cr }}
     <br/>
     <br/>
-    <table style="width:300px">
+    <table style="width:250px">
         <tr style="color:maroon">
             <th>STR</th>
             <th>DEX</th>
@@ -28,18 +28,6 @@
             <td align="center"> {{ creature.int }}</td>
             <td align="center"> {{ creature.wis }}</td>
             <td align="center"> {{ creature.cha }}</td>
-        </tr>
-
-        <tr style="color:maroon">
-            <th>Speed</th>
-            <th>Fly</th>
-            <th>Swim</th>
-        </tr>
-
-        <tr>
-            <td align="center"> {{ creature.speed }} ft.</td>
-            <td align="center"> {{ creature.flyspeed }} ft.</td>
-            <td align="center"> {{ creature.swimspeed }} ft.</td>
         </tr>
     </table>
 </div>

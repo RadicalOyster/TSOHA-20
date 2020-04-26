@@ -36,6 +36,10 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 **Change Log**
 
+--26.04.2020--
+* Users can now change their password
+* Slight visual update
+
 --25.04.2020--
 * Added ability to create new users
 * Fixed a bug with creatures' CON and Animal Handling modifiers not displaying properly

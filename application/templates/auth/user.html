@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2 style="padding: 15px 15px 15px 15px">Viewing user {{ user.username }}</h2>
+<div style="padding: 0px 20px 25px 25px">
+    id: {{ user.id }}
+    <br />
+    Name: {{user.name}}
+    <br />
+    Username: {{ user.username }}
+    <br />
+    <br />
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#passwordForm"
+        aria-expanded="false">
+        Change Password
+    </button>
+
+    {% if collapsed %}
+    <form method="POST" action="{{ url_for('change_password', user_id = user.id) }}" class=collapse id="passwordForm">
+        <table>
+            <tr>
+                <td>
+                    {{ form.currentpassword.label }}
+                </td>
+                <td>
+                    {{ form.currentpassword }}
+                </td>
+                {% for error in form.errors["currentpassword"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    {{ form.repeat.label }}
+                </td>
+                <td>
+                    {{ form.repeat }}
+                </td>
+                {% for error in form.errors["repeat"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    {{ form.newpassword.label }}
+                </td>
+                <td>
+                    {{ form.newpassword }}
+                </td>
+                {% for error in form.errors["repeat"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Change Password" />
+                </td>
+            </tr>
+    </form>
+
+    {% else %}
+    <form method="POST" action="{{ url_for('change_password', user_id = user.id) }}" class="collapse show" id="passwordForm">
+        <table>
+            <tr>
+                <td>
+                    {{ form.currentpassword.label }}
+                </td>
+                <td>
+                    {{ form.currentpassword }}
+                </td>
+                {% for error in form.errors["currentpassword"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    {{ form.repeat.label }}
+                </td>
+                <td>
+                    {{ form.repeat }}
+                </td>
+                {% for error in form.errors["repeat"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>
+                    {{ form.newpassword.label }}
+                </td>
+                <td>
+                    {{ form.newpassword }}
+                </td>
+                {% for error in form.errors["repeat"] %}
+                <td>
+                    <a class="alert alert-error">
+                        <strong style="color:red">Error: </strong> {{error}}
+                    </a>
+                </td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Change Password" />
+                </td>
+            </tr>
+    </form>
+    {% endif %}
+
+</div>
+    {% endblock %}

@@ -22,6 +22,7 @@ def creatures_create():
     form = CreatureForm(request.form)
 
     if not form.validate():
+        print(form.errors)
         return render_template("creatures/new.html", form = form)
         
     arguments = request.form.to_dict()

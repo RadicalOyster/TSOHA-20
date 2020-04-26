@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Dungeons and Dragons Database</title>
@@ -21,20 +22,24 @@
                     <a class="nav-link" href="{{ url_for('creature_index') }} ">List creatures</a>
                 </li>
                 {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('creature_form') }} ">Add a creature</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('admin_panel') }} ">Admin panel</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('creature_form') }} ">Add a creature</a>
+                </li>
                 {% endif %}
             </ul>
             <div class="form-inline mt-2 mt-md-0">
                 {% if current_user.is_authenticated %}
-                {{ current_user.name }} logged in -- &nbsp <a style="color:maroon" href="{{ url_for('auth_logout') }}"> Logout</a>
+                {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
+                <a class="nav-link" href="{{ url_for('admin_panel') }} " style="color:maroon">Admin panel</a>
+                {% endif %}
+                {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
+                <a class="nav-link" href="{{ url_for('show_user', user_id = current_user.id) }}" style="color:maroon">Account</a>
+                {% endif %}
+                {{ current_user.name }} logged in -- &nbsp <a style="color:maroon" href="{{ url_for('auth_logout') }}">
+                    Logout</a>
                 {% else %}
                 <a style="color:maroon" href="{{ url_for('signup') }}">Sign up</a>
-                &nbsp&nbsp&nbsp 
+                &nbsp&nbsp&nbsp
                 <a style="color:maroon" href="{{ url_for('auth_login') }}">Login</a>
                 {% endif %}
             </div>

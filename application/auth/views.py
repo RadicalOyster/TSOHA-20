@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user
 
 from application._init_ import app, login_required, db, current_user
 from application.auth.models import User, Role
-from application.auth.forms import LoginForm, UserEditForm, SignupForm
+from application.auth.forms import LoginForm, UserEditForm, SignupForm, PasswordChangeForm
 
 
 @app.route("/auth/login", methods=["GET", "POST"])
@@ -88,10 +88,9 @@ def create_user():
         return redirect(url_for("index"))
     form = SignupForm(request.form)
     if not form.validate():
-        returnform = SignupForm(request.form)
-        returnform.password.data = ""
-        returnform.repeat.data = ""
-        return render_template("auth/signup.html", form=returnform)
+        form.password.data = ""
+        form.repeat.data = ""
+        return render_template("auth/signup.html", form=form)
 
     name = request.form.get('name')
     username = request.form.get('username')
@@ -107,3 +106,30 @@ def create_user():
     db.session().commit()
 
     return redirect(url_for("auth_login"))
+
+
+@app.route("/auth/user/<user_id>/", methods=["GET"])
+@login_required(role="USER")
+def show_user(user_id):
+    return render_template("auth/user.html", user=User.query.get(user_id), form=PasswordChangeForm(), collapsed=True)
+
+
+@app.route("/auth/user/<user_id>/", methods=["POST"])
+@login_required(role="USER")
+def change_password(user_id):
+    form = PasswordChangeForm(request.form)
+    print(form.validate())
+    for i in form.errors:
+        print(form.errors[i])
+    if not form.validate():
+        return render_template("auth/user.html", user=User.query.get(user_id), form=form, collapsed=False)
+    print(user_id)
+    account = User.query.get(user_id)
+    account.password = request.form.get("newpassword")
+    print("\n\n\n")
+    print(account.name)
+    print(account.username)
+    print(account.password)
+    print("\n\n\n")
+    db.session().commit()
+    return render_template("auth/loginform.html", form=LoginForm(), message="Password changed. Please login again.")

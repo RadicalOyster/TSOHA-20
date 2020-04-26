@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{{ error }}
+<a style="color:green"> {{ message }} </a>
+<a style="color:red">{{ error }}</a>
 <form method="POST" action="{{ url_for('auth_login') }}">
   <table>
     <tr>
