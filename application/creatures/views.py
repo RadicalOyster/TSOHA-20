@@ -1,20 +1,28 @@
 from flask import redirect, render_template, request, url_for
 
-from application._init_ import app, db, login_required
+from application._init_ import app, db, login_required, current_user
 from application.creatures.models import Creature
 from application.creatures.forms import CreatureForm
 from application.creatures.forms import CreatureEditForm
 from application.auth.models import User
+
 
 @app.route("/creatures/")
 def creature_index():
     return render_template("creatures/list.html", creatures=(Creature.query.all()))
 
 
+@app.route("/creatures/favorites")
+@login_required(role="USER")
+def list_favorites():
+    return render_template("creatures/list.html", creatures=current_user.creatures)
+
+
 @app.route("/creatures/new")
 @login_required(role="ADMIN")
 def creature_form():
-    return render_template("creatures/new.html", form = CreatureForm())
+    return render_template("creatures/new.html", form=CreatureForm())
+
 
 @app.route("/creatures/new", methods=["POST"])
 @login_required(role="ADMIN")
@@ -23,8 +31,8 @@ def creatures_create():
 
     if not form.validate():
         print(form.errors)
-        return render_template("creatures/new.html", form = form)
-        
+        return render_template("creatures/new.html", form=form)
+
     arguments = request.form.to_dict()
     print(arguments)
 
@@ -53,37 +61,37 @@ def creatures_create():
         dexsav = True
     else:
         dexsav = False
-    
+
     if "consav" in arguments:
         consav = True
     else:
         consav = False
-    
+
     if "intsav" in arguments:
         intsav = True
     else:
         intsav = False
-    
+
     if "wissav" in arguments:
         wissav = True
     else:
         wissav = False
-    
+
     if "chasav" in arguments:
         chasav = True
     else:
         chasav = True
-    
+
     if "athletics" in arguments:
         athletics = True
     else:
         athletics = False
-    
+
     if "acrobatics" in arguments:
         acrobatics = True
     else:
         acrobatics = False
-    
+
     if "soh" in arguments:
         soh = True
     else:
@@ -93,90 +101,94 @@ def creatures_create():
         stealth = True
     else:
         stealth = False
-    
+
     if "arcana" in arguments:
         arcana = True
     else:
         arcana = False
-    
+
     if "history" in arguments:
         history = True
     else:
         history = False
-    
+
     if "investigation" in arguments:
         investigation = True
     else:
         investigation = False
-    
+
     if "nature" in arguments:
         nature = True
     else:
         nature = False
-    
+
     if "religion" in arguments:
         religion = True
     else:
         religion = False
-    
+
     if "animal" in arguments:
         animal = True
     else:
         animal = False
-    
+
     if "insight" in arguments:
         insight = True
     else:
         insight = False
-    
+
     if "medicine" in arguments:
         medicine = True
     else:
         medicine = False
-    
+
     if "perception" in arguments:
         perception = True
     else:
         perception = False
-    
+
     if "surival" in arguments:
         survival = True
     else:
         survival = False
-    
+
     if "deception" in arguments:
         deception = True
     else:
         deception = False
-    
+
     if "intimidation" in arguments:
         intimidation = True
     else:
         intimidation = False
-    
+
     if "performance" in arguments:
         performance = True
     else:
         performance = False
-    
+
     if "persuasion" in arguments:
         persuasion = True
     else:
         persuasion = False
 
     creature = Creature(name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, strsav, dexsav, consav, intsav, wissav, chasav, cr,
-    proficiency, athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception, intimidation,
-    performance, persuasion)
+                        proficiency, athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception, intimidation,
+                        performance, persuasion)
 
     db.session().add(creature)
     db.session().commit()
     return redirect(url_for("creature_index"))
 
+
 @app.route("/creatures/<creature_id>/", methods=["GET"])
 def show_creature(creature_id):
     creature = Creature.query.get(creature_id)
+    favorite = False
+    if current_user.is_authenticated and creature in current_user.creatures:
+        favorite = True
     if creature is not None:
-        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm())
+        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm(), favorite=favorite)
     return redirect(url_for("creature_index"))
 
 
@@ -242,37 +254,37 @@ def change_creature_stats(creature_id):
         creature.dexsav = True
     else:
         creature.dexsav = False
-    
+
     if "consav" in arguments:
         creature.consav = True
     else:
         creature.consav = False
-    
+
     if "intsav" in arguments:
         creature.intsav = True
     else:
         creature.intsav = False
-    
+
     if "wissav" in arguments:
         creature.wissav = True
     else:
         creature.wissav = False
-    
+
     if "chasav" in arguments:
         creature.chasav = True
     else:
         creature.chasav = True
-    
+
     if "athletics" in arguments:
         creature.athletics = True
     else:
         creature.athletics = False
-    
+
     if "acrobatics" in arguments:
         creature.acrobatics = True
     else:
         creature.acrobatics = False
-    
+
     if "soh" in arguments:
         creature.soh = True
     else:
@@ -282,80 +294,81 @@ def change_creature_stats(creature_id):
         creature.stealth = True
     else:
         creature.stealth = False
-    
+
     if "arcana" in arguments:
         creature.arcana = True
     else:
         creature.arcana = False
-    
+
     if "history" in arguments:
         creature.history = True
     else:
         creature.history = False
-    
+
     if "investigation" in arguments:
         creature.investigation = True
     else:
         creature.investigation = False
-    
+
     if "nature" in arguments:
         creature.nature = True
     else:
         creature.nature = False
-    
+
     if "religion" in arguments:
         creature.religion = True
     else:
         creature.religion = False
-    
+
     if "animal" in arguments:
         creature.animal = True
     else:
         creature.animal = False
-    
+
     if "insight" in arguments:
         creature.insight = True
     else:
         creature.insight = False
-    
+
     if "medicine" in arguments:
         creature.medicine = True
     else:
         creature.medicine = False
-    
+
     if "perception" in arguments:
         creature.perception = True
     else:
         creature.perception = False
-    
+
     if "surival" in arguments:
         creature.survival = True
     else:
         creature.survival = False
-    
+
     if "deception" in arguments:
         creature.deception = True
     else:
         creature.deception = False
-    
+
     if "intimidation" in arguments:
         creature.intimidation = True
     else:
         creature.intimidation = False
-    
+
     if "performance" in arguments:
         creature.performance = True
     else:
         creature.performance = False
-    
+
     if "persuasion" in arguments:
         creature.persuasion = True
     else:
         creature.persuasion = False
-    
+
     db.session().commit()
 
     return redirect(url_for("show_creature", creature_id=creature_id))
+
 
 @app.route("/creatures/delete/<creature_id>/", methods=["POST"])
 @login_required
@@ -364,3 +377,23 @@ def delete_creature(creature_id):
     db.session().delete(creature)
     db.session().commit()
     return redirect(url_for("creature_index"))
+
+
+@app.route("/creatures/favorite/<creature_id>", methods=["POST"])
+@login_required
+def favorite_creature(creature_id):
+    user = User.query.get(request.form["user_id"])
+    creature = Creature.query.get(creature_id)
+    user.creatures.append(creature)
+    db.session.commit()
+    return redirect(url_for("show_creature", creature_id=creature_id))
+
+
+@app.route("/creatures/favorite/<creature_id>/remove", methods=["POST"])
+@login_required
+def remove_favorite(creature_id):
+    user = User.query.get(request.form["user_id"])
+    creature = Creature.query.get(creature_id)
+    user.creatures.remove(creature)
+    db.session.commit()
+    return redirect(url_for("index"))

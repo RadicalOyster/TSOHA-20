@@ -39,6 +39,7 @@ The purpose of this application is to be able to quickly add and retrieve inform
 --26.04.2020--
 * Users can now change their password
 * Slight visual update
+* Users can now add and remove creatures from a list of favorites
 
 --25.04.2020--
 * Added ability to create new users

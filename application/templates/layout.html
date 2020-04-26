@@ -21,6 +21,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('creature_index') }} ">List creatures</a>
                 </li>
+                {% if "USER" in (current_user.roles|map(attribute='name')) %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('list_favorites') }} ">My Favorites</a>
+                </li>
+                {% endif %}
                 {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('creature_form') }} ">Add a creature</a>
@@ -33,7 +38,8 @@
                 <a class="nav-link" href="{{ url_for('admin_panel') }} " style="color:maroon">Admin panel</a>
                 {% endif %}
                 {% if "USER" in (current_user.roles|map(attribute='name')) %}
-                <a class="nav-link" href="{{ url_for('show_user', user_id = current_user.id) }}" style="color:maroon">Account</a>
+                <a class="nav-link" href="{{ url_for('show_user', user_id = current_user.id) }}"
+                    style="color:maroon">Account</a>
                 {% endif %}
                 {{ current_user.name }} logged in -- &nbsp <a style="color:maroon" href="{{ url_for('auth_logout') }}">
                     Logout</a>

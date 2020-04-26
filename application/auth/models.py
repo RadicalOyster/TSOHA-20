@@ -37,6 +37,7 @@ class User(db.Model):
         self.username = username
         self.password = password
         self.roles = []
+        self.creatures = []
 
     def get_id(self):
         return self.id
