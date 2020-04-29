@@ -3,6 +3,7 @@ from wtforms import StringField, DecimalField, IntegerField, BooleanField, TextA
 from application._init_ import damagetypes
 
 class AbilityForm(FlaskForm):
+    
     name = StringField("Name", [validators.Length(min=2), validators.Length(max=40), validators.optional()])
     description = TextAreaField("Description", [validators.Length(max=10000)])
     toHit = IntegerField("To Hit", [validators.optional()])

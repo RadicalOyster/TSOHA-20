@@ -56,6 +56,7 @@ from application import views
 from application.creatures import models
 from application.auth.models import User, Role
 from application.auth import views
+from application.abilities.models import DamageType
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -69,8 +70,6 @@ try:
 
 except:
     pass
-
-from application.abilities.models import DamageType
 
 damagetypes = []
 types = DamageType.query.order_by(DamageType.type).all()
