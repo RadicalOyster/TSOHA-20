@@ -4,6 +4,8 @@ from application._init_ import app, db, login_required, current_user
 from application.creatures.models import Creature
 from application.creatures.forms import CreatureForm
 from application.creatures.forms import CreatureEditForm
+from application.abilities.models import DamageType, Ability, Attack
+from application.abilities.forms import AbilityForm
 from application.auth.models import User
 
 
@@ -188,17 +190,63 @@ def show_creature(creature_id):
     if current_user.is_authenticated and creature in current_user.creatures:
         favorite = True
     if creature is not None:
-        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm(), favorite=favorite)
+        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm(), abilityForm=AbilityForm(), favorite=favorite)
     return redirect(url_for("creature_index"))
 
 
+@app.route("/creatures/<creature_id>/ability", methods=["POST"])
+# @login_required(role="ADMIN")
+def add_ability(creature_id):
+    form = AbilityForm(request.form)
+    creature = Creature.query.get(creature_id)
+
+    if not form.validate():
+        return render_template("creatures/show.html", creature=creature, skills=creature.getProficiencies(), saves=creature.getSavingThrows(), form=CreatureEditForm(), abilityForm=form)
+
+    name = request.form.get("name")
+    description = request.form.get("description")
+    ability = Ability(name, description)
+
+    print(request.form.get("attack"))
+    print(request.form.get("attack2"))
+
+    attack = request.form.get("attack")
+    attack2 = request.form.get("attack2")
+
+    if attack is 'y':
+        toHit = request.form.get("toHit")
+        damage = request.form.get("damageFormula")
+        damagetype = form.damageType.data
+        attack1 = Attack(damage, damagetype)
+        ability.tohit = toHit
+        ability.attacks.append(attack1)
+    else:
+        pass
+
+    if attack2 is 'y' and attack is 'y':
+        damage2 = request.form.get("damageFormula2")
+        damagetype2 = form.damageType2.data
+        attack2 = Attack(damage2, damagetype2)
+        ability.attacks.append(attack2)
+    else:
+        pass
+
+    creature.abilities.append(ability)
+
+    db.session().add(creature)
+    db.session().commit()
+
+    return redirect(url_for("show_creature", creature_id=creature_id))
+
+
 @app.route("/creatures/<creature_id>/", methods=["POST"])
+@login_required(role="ADMIN")
 def change_creature_stats(creature_id):
     form = CreatureEditForm(request.form)
     creature = Creature.query.get(creature_id)
 
     if not form.validate():
-        return render_template("creatures/show.html", creature=Creature.query.filter_by(id=creature_id).first(), skills=creature.getProficiencies(), form=form)
+        return render_template("creatures/show.html", creature=Creature.query.filter_by(id=creature_id).first(), skills=creature.getProficiencies(), form=form, abilityForm=AbilityForm())
 
     arguments = request.form.to_dict()
     name = request.form.get('name')
@@ -215,6 +263,7 @@ def change_creature_stats(creature_id):
     wis = request.form.get('wis')
     cha = request.form.get('cha')
     cr = request.form.get('cr')
+    proficiency = request.form.get('proficiency')
 
     if name is not '':
         creature.name = name
@@ -244,6 +293,8 @@ def change_creature_stats(creature_id):
         creature.cha = cha
     if cr is not '':
         creature.cr = cr
+    if proficiency is not '':
+        creature.proficiency = proficiency
 
     if "strsav" in arguments:
         creature.strsav = True
@@ -396,4 +447,4 @@ def remove_favorite(creature_id):
     creature = Creature.query.get(creature_id)
     user.creatures.remove(creature)
     db.session.commit()
-    return redirect(url_for("index"))
+    return redirect(url_for("show_creature", creature_id=creature_id))

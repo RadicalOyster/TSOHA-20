@@ -40,18 +40,10 @@ def login_required(_func=None, *, role="ANY"):
         def decorated_view(*args, **kwargs):
             if not (current_user and current_user.is_authenticated):
                 return login_manager.unauthorized()
-
             acceptable_roles = ["ANY"]
             for userRole in current_user.roles:
                 acceptable_roles.append(userRole.name)
-
             userRoles = acceptable_roles      
-
-            print("\n\n\n")
-            print(acceptable_roles)
-            print(role in acceptable_roles)
-            print("\n\n\n")
-
             if role not in acceptable_roles:
                 return login_manager.unauthorized()
 
@@ -60,13 +52,9 @@ def login_required(_func=None, *, role="ANY"):
     return wrapper if _func is None else wrapper(_func)
 
 from application import views
-from application.abilities import models
 
 from application.creatures import models
-from application.creatures import views
-from application.auth.forms import LoginForm, UserEditForm
-
-from application.auth.models import User
+from application.auth.models import User, Role
 from application.auth import views
 
 @login_manager.user_loader
@@ -75,5 +63,20 @@ def load_user(user_id):
 
 try:
     db.create_all()
+    Role.initialize_roles()
+    User.initialize_admin()
+    DamageType.initialize_damagetypes()
+
 except:
     pass
+
+from application.abilities.models import DamageType
+
+damagetypes = []
+types = DamageType.query.order_by(DamageType.type).all()
+for dtype in types:
+    choice = (dtype.id, dtype.type)
+    damagetypes.append(choice)
+
+from application.creatures import views
+from application.auth.forms import LoginForm, UserEditForm

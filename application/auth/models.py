@@ -51,6 +51,21 @@ class User(db.Model):
     def is_authenticated(self):
         return True
 
+    @staticmethod
+    def initialize_admin():
+        try:
+            stmt = text(
+                "INSERT INTO Account (name, username, password) VALUES ('Admin', 'Admin', 'Admin')")
+            db.engine.execute(stmt)
+            stmt = text(
+                "INSERT INTO Account_Role (user_id, role_id) VALUES (1, 1)")
+            db.engine.execute(stmt)
+            stmt = text(
+                "INSERT INTO Account_Role (user_id, role_id) VALUES (1, 2)")
+            db.engine.execute(stmt)
+        except:
+            pass
+
 
 class Role(db.Model):
     __tablename__ = "role"
@@ -63,6 +78,16 @@ class Role(db.Model):
         self.name = name
 
     @staticmethod
+    def initialize_roles():
+        try:
+            stmt = text("INSERT INTO Role (name) VALUES ('ADMIN')")
+            db.engine.execute(stmt)
+            stmt = text("INSERT INTO Role (name) VALUES ('USER')")
+            db.engine.execute(stmt)
+        except:
+            pass
+
+    @staticmethod
     def find_role_by_name(name):
         stmt = text("SELECT role.id, role.name FROM role"
                     " WHERE role.name = :name").params(name=name)
@@ -71,6 +96,6 @@ class Role(db.Model):
         response = []
 
         for row in res:
-            response.append({"id":row[0], "name":row[1]})
-    
+            response.append({"id": row[0], "name": row[1]})
+
         return response

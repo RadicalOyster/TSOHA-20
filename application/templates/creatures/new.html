@@ -170,11 +170,11 @@
             <td>
                 {{ form.nature.label }}
                 {{ form.nature }}
-            </td> 
+            </td>
             <td>
                 {{ form.religion.label }}
                 {{ form.religion }}
-            </td>   
+            </td>
         </tr>
         <tr>
             <td>
@@ -192,7 +192,7 @@
             <td>
                 {{ form.perception.label }}
                 {{ form.perception }}
-            </td> 
+            </td>
             <td>
                 {{ form.survival.label }}
                 {{ form.survival }}
@@ -214,18 +214,18 @@
             <td>
                 {{ form.persuasion.label }}
                 {{ form.persuasion }}
-            </td> 
+            </td>
         </tr>
     </table>
-    <input type="submit" value="Add creature"/>
+    <input type="submit" value="Add creature" />
     <ul>
         {% for field in form.errors %}
         {% for error in form.errors[field] %}
-            <div class="alert alert-error">
-                <strong style="color:red">Error in field {{field}}</strong> {{error}}
-            </div>
+        <div class="alert alert-error">
+            <strong style="color:red">Error in field {{field}}</strong> {{error}}
+        </div>
         {% endfor %}
         {% endfor %}
-      </ul>
+    </ul>
 </form>
 {% endblock %}

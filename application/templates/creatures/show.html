@@ -1,9 +1,33 @@
 {% extends "layout.html" %}
 
 {% block body %}
+{% for field in abilityForm.errors %}
+{% for error in abilityForm.errors[field] %}
+<div class="alert alert-error">
+    <strong style="color:red">Error in field {{field}}</strong> {{error}}
+</div>
+{% endfor %}
+{% endfor %}
 <div style="background-color: #ebe1c7;padding: 0px 0px 5px 25px;width:1000px">
     <h2 style="color:maroon">{{creature.name}}
     </h2>
+    {% if "USER" in (current_user.roles|map(attribute='name')) %}
+    {% if creature.id in (current_user.creatures|map(attribute='id')) %}
+    <div>
+        <form method="POST" action="{{ url_for('remove_favorite', creature_id=creature.id) }}">
+            <input type=hidden value="{{ current_user.id }}" name=user_id>
+            <input type="submit" value="Remove Favorite" />
+        </form>
+    </div>
+    {% else %}
+    <div>
+        <form method="POST" action="{{ url_for('favorite_creature', creature_id=creature.id) }}">
+            <input type=hidden value="{{ current_user.id }}" name=user_id>
+            <input type="submit" value="Add to Favorites" />
+        </form>
+    </div>
+        {% endif %}
+    {% endif %}
     <b>Armor Class:</b> {{ creature.ac }}
     <br />
     <b>HP: </b> {{ creature.hp }} ({{ creature.formula }})
@@ -68,7 +92,7 @@
             <h2 style="color:maroon">Abilities</h2>
         </tr>
         {% for ability in creature.abilities %}
-        <div style="background-color: #ebe1c7" style="width: 1500px">
+        <div id="abilities" style="background-color: #ebe1c7" style="width: 1500px">
             <b>{{ability.name}}.</b> <i>{{ability.description}}</i>
             {% for attack in ability.attacks %}
             : +{{ ability.toHit }} to hit.
@@ -77,28 +101,81 @@
         </div>
         {% endfor %}
     </table>
-    {% if "USER" in (current_user.roles|map(attribute='name')) %}
-    {% if creature.id in (current_user.creatures|map(attribute='id')) %}
-    <div align="right">
-        <form method="POST" action="{{ url_for('remove_favorite', creature_id=creature.id) }}">
-            <input type=hidden value="{{ current_user.id }}" name=user_id>
-            <input type="submit" value="Remove Favorite" />
-        </form>
-    </div>
-    {% else %}
-    <div align="right">
-        <form method="POST" action="{{ url_for('favorite_creature', creature_id=creature.id) }}">
-            <input type=hidden value="{{ current_user.id }}" name=user_id>
-            <input type="submit" value="Add to Favorites" />
-        </form>
-    </div>
-    {% endif %}
-    {% endif %}
     {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
+    <div>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#newability"
+            aria-expanded="false">
+            New Ability
+        </button>
+    </div>
 
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editform" aria-expanded="false">
-        Edit stats
-    </button>
+    <br />
+
+    <form method="POST" class="collapse" id="newability" action="{{ url_for('add_ability', creature_id=creature.id) }}">
+        <table>
+            <tr>
+                <td>
+                    {{ abilityForm.name.label }}
+                    {{ abilityForm.name }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.description.label }}
+                    </br>
+                    {{ abilityForm.description(cols="70", rows="6") }}
+                </td>
+            </tr>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.attack.label }}
+                    {{ abilityForm.attack }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.toHit.label }}
+                    {{ abilityForm.toHit }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.damageFormula.label }}
+                    {{ abilityForm.damageFormula }}
+                </td>
+
+                <td>
+                    {{ abilityForm.damageType.label }}
+                    {{ abilityForm.damageType() }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.attack2.label }}
+                    {{ abilityForm.attack2 }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.damageFormula2.label }}
+                    {{ abilityForm.damageFormula2 }}
+                </td>
+                <td>
+                    {{ abilityForm.damageType2.label }}
+                    {{ abilityForm.damageType2 }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Add ability" />
+    </form>
+
+    <div>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#editform"
+            aria-expanded="false">
+            Edit stats
+        </button>
+    </div>
 
     <form class="collapse" method="POST" id="editform"
         action="{{ url_for('change_creature_stats', creature_id=creature.id) }}">
@@ -108,25 +185,25 @@
                     {{ form.name.label }}
                 </td>
                 <td>
-                    {{ form.name }}
+                    {{ form.name(value=creature.name) }}
                 </td>
                 <td>
                     {{ form.hp.label }}
                 </td>
                 <td>
-                    {{ form.hp }}
+                    {{ form.hp(value=creature.hp) }}
                 </td>
                 <td>
                     {{ form.formula.label }}
                 </td>
                 <td>
-                    {{ form.formula }}
+                    {{ form.formula(value=creature.formula) }}
                 </td>
                 <td>
                     {{ form.ac.label }}
                 </td>
                 <td>
-                    {{ form.ac }}
+                    {{ form.ac(value=creature.ac) }}
                 </td>
             </tr>
             <tr>
@@ -134,19 +211,19 @@
                     {{ form.speed.label }}
                 </td>
                 <td>
-                    {{ form.speed }}
+                    {{ form.speed(value=creature.speed) }}
                 </td>
                 <td>
                     {{ form.flyspeed.label }}
                 </td>
                 <td>
-                    {{ form.flyspeed }}
+                    {{ form.flyspeed(value=creature.flyspeed) }}
                 </td>
                 <td>
                     {{ form.swimspeed.label }}
                 </td>
                 <td>
-                    {{ form.swimspeed }}
+                    {{ form.swimspeed(value=creature.swimspeed) }}
                 </td>
             </tr>
             <tr>
@@ -154,19 +231,19 @@
                     {{ form.strength.label }}
                 </td>
                 <td>
-                    {{ form.strength }}
+                    {{ form.strength(value=creature.str) }}
                 </td>
                 <td>
                     {{ form.dex.label }}
                 </td>
                 <td>
-                    {{ form.dex }}
+                    {{ form.dex(value=creature.dex) }}
                 </td>
                 <td>
                     {{ form.con.label }}
                 </td>
                 <td>
-                    {{ form.con }}
+                    {{ form.con(value=creature.con) }}
                 </td>
             </tr>
             <tr>
@@ -174,19 +251,19 @@
                     {{ form.intelligence.label }}
                 </td>
                 <td>
-                    {{ form.intelligence }}
+                    {{ form.intelligence(value=creature.int) }}
                 </td>
                 <td>
                     {{ form.wis.label }}
                 </td>
                 <td>
-                    {{ form.wis }}
+                    {{ form.wis(value=creature.wis) }}
                 </td>
                 <td>
                     {{ form.cha.label }}
                 </td>
                 <td>
-                    {{ form.cha }}
+                    {{ form.cha(value=creature.cha) }}
                 </td>
             </tr>
             <tr>
@@ -194,13 +271,13 @@
                     {{ form.cr.label }}
                 </td>
                 <td>
-                    {{ form.cr }}
+                    {{ form.cr(value=creature.cr) }}
                 </td>
                 <td>
                     {{ form.proficiency.label }}
                 </td>
                 <td>
-                    {{ form.proficiency }}
+                    {{ form.proficiency(value=creature.proficiency) }}
                 </td>
             </tr>
         </table>
@@ -209,27 +286,27 @@
             <tr>
                 <td>
                     {{ form.strsav.label }}
-                    {{ form.strsav }}
+                    {{ form.strsav(default=creature.strsav, checked=creature.strsav) }}
                 </td>
                 <td>
                     {{ form.dexsav.label }}
-                    {{ form.dexsav }}
+                    {{ form.dexsav(default=creature.dexsav, checked=creature.dexsav) }}
                 </td>
                 <td>
                     {{ form.consav.label }}
-                    {{ form.consav }}
+                    {{ form.consav(default=creature.consav, checked=creature.consav) }}
                 </td>
                 <td>
                     {{ form.intsav.label }}
-                    {{ form.intsav }}
+                    {{ form.intsav(default=creature.intsav, checked=creature.intsav) }}
                 </td>
                 <td>
                     {{ form.wissav.label }}
-                    {{ form.wissav }}
+                    {{ form.wissav(default=creature.wissav, checked=creature.wissav) }}
                 </td>
                 <td>
                     {{ form.chasav.label }}
-                    {{ form.chasav }}
+                    {{ form.chasav(default=creature.chasav, checked=creature.chasav) }}
                 </td>
             </tr>
         </table>
@@ -238,81 +315,81 @@
             <tr valign="middle">
                 <td>
                     {{ form.athletics.label }}
-                    {{ form.athletics }}
+                    {{ form.athletics(default=creature.athletics, checked=creature.athletics) }}
                 </td>
                 <td>
                     {{ form.acrobatics.label }}
-                    {{ form.acrobatics }}
+                    {{ form.acrobatics(default=creature.acrobatics, checked=creature.acrobatics) }}
                 </td>
                 <td>
                     {{ form.soh.label }}
-                    {{ form.soh }}
+                    {{ form.soh(default=creature.soh, checked=creature.soh) }}
                 </td>
                 <td>
                     {{ form.stealth.label }}
-                    {{ form.stealth }}
+                    {{ form.stealth(default=creature.stealth, checked=creature.stealth) }}
                 </td>
             </tr>
             <tr>
                 <td>
                     {{ form.arcana.label }}
-                    {{ form.arcana }}
+                    {{ form.arcana(default=creature.arcana, checked=creature.arcana) }}
                 </td>
                 <td>
                     {{ form.history.label }}
-                    {{ form.history }}
+                    {{ form.history(default=creature.history, checked=creature.history) }}
                 </td>
                 <td>
                     {{ form.investigation.label }}
-                    {{ form.investigation }}
+                    {{ form.investigation(default=creature.investigation, checked=creature.investigation) }}
                 </td>
                 <td>
                     {{ form.nature.label }}
-                    {{ form.nature }}
+                    {{ form.nature(default=creature.nature, checked=creature.nature) }}
                 </td>
                 <td>
                     {{ form.religion.label }}
-                    {{ form.religion }}
+                    {{ form.religion(default=creature.religion, checked=creature.religion) }}
                 </td>
             </tr>
             <tr>
                 <td>
                     {{ form.animal.label }}
-                    {{ form.animal }}
+                    {{ form.animal(default=creature.animal, checked=creature.animal) }}
                 </td>
                 <td>
                     {{ form.insight.label }}
-                    {{ form.insight }}
+                    {{ form.insight(default=creature.insight, checked=creature.insight) }}
                 </td>
                 <td>
                     {{ form.medicine.label }}
-                    {{ form.medicine }}
+                    {{ form.medicine(default=creature.medicine, checked=creature.medicine) }}
                 </td>
                 <td>
                     {{ form.perception.label }}
-                    {{ form.perception }}
+                    {{ form.perception(default=creature.perception, checked=creature.perception) }}
                 </td>
                 <td>
                     {{ form.survival.label }}
-                    {{ form.survival }}
+                    {{ form.survival(default=creature.survival, checked=creature.survival) }}
                 </td>
             </tr>
             <tr>
                 <td>
                     {{ form.deception.label }}
-                    {{ form.deception }}
+                    {{ form.deception(default=creature.deception, checked=creature.deception) }}
                 </td>
                 <td>
                     {{ form.intimidation.label }}
-                    {{ form.intimidation }}
+                    {{ form.intimidation(default=creature.intimidation, checked=creature.intimidation) }}
                 </td>
                 <td>
                     {{ form.performance.label }}
-                    {{ form.performance }}
+                    {{ form.performance(default=creature.performance, checked=creature.performance) }}
                 </td>
                 <td>
                     {{ form.persuasion.label }}
-                    {{ form.persuasion }}
+                    {{ form.persuasion(default=creature.persuasion, checked=creature.persuasion) }}
                 </td>
             </tr>
         </table>
@@ -327,9 +404,12 @@
         {% endfor %}
         {% endfor %}
     </ul>
+
+
     <form method="POST" action="{{ url_for('delete_creature', creature_id=creature.id) }}">
         <input type=hidden value="{{ creature.id }}" name=creature_to_delete>
         <input type="submit" value="Delete Creature" />
     </form>
+
     {% endif %}
     {% endblock %}

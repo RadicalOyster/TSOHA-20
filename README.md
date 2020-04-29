@@ -19,10 +19,7 @@ The purpose of this application is to be able to quickly add and retrieve inform
 * [Database diagram](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/preliminary%20database%20diagram.png)
 * [User stories](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/user_stories.md)
 
-* Test users for Heroku:
-(admin) username: hello, password: world
-
-(user) username: Odin, password: Harold
+* Default admin login Username: Admin, Password: Admin
 
 **Features to add**
 
@@ -35,6 +32,11 @@ The purpose of this application is to be able to quickly add and retrieve inform
 * More robust creature statistics such as alignment and spells
 
 **Change Log**
+
+--29.04.2020--
+* Database is now initialized with user Admin and the user roles 'Admin' and 'User'
+* Database is now initialized with damage types
+* Admins can now add abilities to creatures
 
 --26.04.2020--
 * Users can now change their password
