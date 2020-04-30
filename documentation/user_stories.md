@@ -1,7 +1,5 @@
 **User Stories**
 
-```
-
 * As a user I should be able to easily see all the creatures in the database
 
   * sql query:
