@@ -28,7 +28,7 @@ class CreatureAbility(db.Model):
 
 class Creature(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(40), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     hp = db.Column(db.Integer, nullable=False)
     formula = db.Column(db.String(40))
     ac = db.Column(db.Integer, nullable=False)

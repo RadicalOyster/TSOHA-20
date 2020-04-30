@@ -21,16 +21,11 @@ class User(db.Model):
     __tablename__ = "account"
 
     id = db.Column(db.Integer, primary_key=True)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
-                              onupdate=db.func.current_timestamp())
     name = db.Column(db.String(144), nullable=False)
     username = db.Column(db.String(144), nullable=False, unique=True)
     password = db.Column(db.String(144), nullable=False)
-    roles = db.relationship(
-        "Role", secondary="account_role", backref='role', lazy=True)
-    creatures = db.relationship(
-        "Creature", secondary="account_creature", backref='creature', lazy=True)
+    roles = db.relationship("Role", secondary="account_role", backref='role', lazy=True)
+    creatures = db.relationship("Creature", secondary="account_creature", backref='creature', lazy=True)
 
     def __init__(self, name, username, password):
         self.name = name
