@@ -1,7 +1,5 @@
 from flask import redirect, render_template, request, url_for
 from application._init_ import app, db
-from application.creatures.models import Creature
-from application.creatures.forms import CreatureForm
 
 
 @app.route("/")

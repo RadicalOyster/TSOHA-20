@@ -57,6 +57,7 @@ from application.creatures import models
 from application.auth.models import User, Role
 from application.auth import views
 from application.abilities.models import DamageType
+from application.abilities import views
 
 @login_manager.user_loader
 def load_user(user_id):

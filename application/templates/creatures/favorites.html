@@ -1,16 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<form method="POST" action="{{ url_for('creature_index')}}">
-    {{ searchForm.name.label }} {{ searchForm.name }} {{ searchForm.nameButton }}
-    </br>
-    {{ searchForm.damageType.label }} {{ searchForm.damageType }} {{ searchForm.damageTypeButton }}
-</form>
-
-</br>
-
-
-
 {% for creature in creatures %}
 <div style="background-color: #ebe1c7;padding: 0px 0px 5px 15px;width:500px">
     <h2><a style="color:maroon" href="{{ url_for('show_creature', creature_id = creature.id) }}">{{creature.name}}</a>

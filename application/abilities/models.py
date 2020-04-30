@@ -7,7 +7,6 @@ class Ability(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(10000), nullable=False)
     attacks = db.relationship("Attack")
-    creature = db.relationship("Creature", secondary="Creature_Ability")
     toHit = db.Column(db.Integer, nullable=False)
 
     def __init__(self, name, description, toHit=0):

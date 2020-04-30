@@ -1,6 +1,7 @@
 **Dungeons and Dragons Database**
 
-The purpose of this application is to be able to quickly add and retrieve information about creatures from the tabletop game Dungeons and Dragons 5th Edition. This includes basic statistics such as their ability scores and abilities.
+This applications is a database of creatures for the tabletop game Dungeons and Dragons 5th Edition. Currently the application supports saving and viewing a creature's
+hit points, armor rating, challenge rating, ability scores and saving throws and allows for 
 
 **Current Features**
 
@@ -9,6 +10,30 @@ The purpose of this application is to be able to quickly add and retrieve inform
 * Individual pages for creatures with additional information
 * Editing the ability scores of existing creatures
 * Some user management features for admins (deleting users and editing their details)
+
+**Usage**
+
+Navigation of the application is primarily done from the navigation bar. Upon first opening the home page you will only have the options "List Creatures", "Sign up" and "Login". By default the database is initialized with a user with username "Admin", password "Admin" and admin rights. To change this, open the file application/auth/models.py and change the values in the method initialize_admin() to whatever you want the admin credentials to be.
+
+**List Creatures**
+
+This page lists all the creatures currently in the database. Clicking on the creature's name will take you to the creature's individual page with more detailed information. Creatures can also be sorted by name or damage type associated with their attacks.
+
+**Sign Up**
+
+The sign up link takes you to a form. Simply enter your name, username, password and password again to  create an account, then click login and enter your credentials. By default, new accounts will only have the "USER" role and other roles will need to be added directly to the database
+
+**Login**
+
+The login form is self-explanatory. Enter your username and password and you are now logged in. You now have access to two additional links: "My Favorites" and "Account".
+
+**My Favorites**
+
+Registered users with the "USER" role have access to a few more features than unregistered users. While viewing a creature's individual page there is now an "add to favorites" button that will add the creature to a personal list of favorites for easy access. Clicking on "My Favorites" will bring you to your personal list.
+
+**Account**
+
+Here you can view your account information. Currently You can only change your password by clicking the "Change Password" button and filling in the form. You are then prompted to log in again using your new credentials.
 
 **App in Heroku**
 
@@ -23,15 +48,23 @@ The purpose of this application is to be able to quickly add and retrieve inform
 
 **Features to add**
 
-* Better security (encoded passwords, only user should be able to change their own password)
-* Implementing attacks with multiple damage rolls (requires restructuring of the database)
-* Allowing users to manage their own accounts (eg. change or reset their password)
-* Allowing users to add creatures to a list of favorites
-* Filtering creatures by different criteria
+* Better security (encoded passwords, randomly generated secure user IDs, CSRF)
 * Refined interface
-* More robust creature statistics such as alignment and spells
+* More robust creature statistics such as alignment and abilities split into traits, actions, reactions and legendary actions
+* Beter user management features
+* Cleaning up the code
+
+**Known issues**
+
+* When editing a creature's ability the boxes for attack rolls are checked even if the ability has no attacks associated with it
+* Some features are lacking error messages and notifications on success
 
 **Change Log**
+
+--30.04.2020--
+* Admins can now delete and edit creature abilities
+* Creatures can be filtered by name and damage type dealt by the creature
+* Modifiers are now shown next to a creature's ability scores
 
 --29.04.2020--
 * Database is now initialized with user Admin and the user roles 'Admin' and 'User'

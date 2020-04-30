@@ -1,6 +1,7 @@
 from application._init_ import db
 from sqlalchemy.sql import text
 
+
 def Modifier(creature, skill):
     ret = -6
     if skill in ["STR", "Athletics"]:
@@ -17,11 +18,12 @@ def Modifier(creature, skill):
         ret = int((creature.con - 10)/2)
     return ret
 
+
 class CreatureAbility(db.Model):
-   __tablename__ = "Creature_Ability"
-   id = db.Column(db.Integer, primary_key=True)
-   creature_id = db.Column(db.Integer, db.ForeignKey('creature.id'))
-   ability_id = db.Column(db.Integer, db.ForeignKey('ability.id'))
+    __tablename__ = "Creature_Ability"
+    id = db.Column(db.Integer, primary_key=True)
+    creature_id = db.Column(db.Integer, db.ForeignKey('creature.id'))
+    ability_id = db.Column(db.Integer, db.ForeignKey('ability.id'))
 
 
 class Creature(db.Model):
@@ -73,11 +75,10 @@ class Creature(db.Model):
 
     abilities = db.relationship(
         "Ability", secondary="Creature_Ability", backref='ability')
-    users = db.relationship("User", secondary="account_creature")
 
     def __init__(self, name, hp, formula, ac, speed, swimspeed, flyspeed, strength, dex, con, intelligence, wis, cha, strsav, dexsav, consav, intsav, wissav, chasav, cr, proficiency,
-    athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception, intimidation, performance,
-    persuasion):
+                 athletics, acrobatics, soh, stealth, arcana, history, investigation, nature, religion, animal, insight, medicine, perception, survival, deception, intimidation, performance,
+                 persuasion):
         self.name = name
         self.hp = hp
         self.formula = formula
@@ -123,7 +124,7 @@ class Creature(db.Model):
         skills = {}
         proficiencies = {}
         skills["Athletics"] = self.athletics
-        skills["Acrobatics"] = self.acrobatics 
+        skills["Acrobatics"] = self.acrobatics
         skills["Sleight of Hand"] = self.soh
         skills["Stealth"] = self.stealth
         skills["Arcana"] = self.arcana
@@ -145,7 +146,7 @@ class Creature(db.Model):
             if prof == True:
                 proficiencies[skill] = Modifier(self, skill) + self.proficiency
         return proficiencies
-    
+
     def getSavingThrows(self):
         saves = {}
         saveproficiencies = {}
@@ -159,22 +160,23 @@ class Creature(db.Model):
 
         for save, prof in saves.items():
             if prof == True:
-                saveproficiencies[save] = Modifier(self, save) + self.proficiency
+                saveproficiencies[save] = Modifier(
+                    self, save) + self.proficiency
         return saveproficiencies
 
     @staticmethod
     def find_creatures_with_damage_type(damagetype=''):
-        stmt = text("SELECT Creature.id, Creature.name FROM Creature"
-                    " LEFT JOIN Creature_Ability ON Creature.id = Creature_Ability.creature_id"
-                    " LEFT JOIN Ability ON Ability.id = Creature_Ability.ability_id"
-                    " LEFT JOIN Attack ON Attack.id = Ability.attack_id"
-                    " LEFT JOIN Attack_DamageType ON Attack.id = Attack_DamageType.attack_id"
-                    " LEFT JOIN Damage_Type ON Damage_Type.id = Attack_DamageType.damagetype_id"
-                    " WHERE Damage_Type.type = :damagetype").params(damagetype=damagetype)
+        stmt = text("SELECT * FROM CREATURE "
+                    "LEFT JOIN Creature_Ability ON Creature.id = Creature_Ability.creature_id "
+                    "LEFT JOIN Ability ON Ability.id = Creature_Ability.ability_id "
+                    "LEFT JOIN Attack ON Attack.ability_id = Ability.id "
+                    "LEFT JOIN Damage_Type ON Damage_Type.id = Attack.DamageType_id "
+                    "WHERE DamageType_id = :damagetype").params(damagetype=damagetype)
         res = db.engine.execute(stmt)
 
         response = []
         for row in res:
-            response.append({"id":row[0], "name":row[1]})
-            
+            response.append({"id": row[0], "name": row[1], "ac": row[4], "hp": row[2], "formula": row[3], "cr": row[8],
+                             "str": row[9], "dex": row[10], "con": row[11], "int": row[12], "wis": row[13], "cha": row[14]})
+
         return response

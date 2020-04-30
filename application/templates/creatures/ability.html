@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div style="background-color: #ebe1c7;padding: 0px 0px 5px 25px;width:1000px">
+    <h2>Viewing ability {{ ability.name }} of creature {{ creature.name }} (id {{creature.id}})</h2>
+    <div>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#updateability"
+            aria-expanded="false">
+            Update Ability
+        </button>
+    </div>
+    </br>
+    <form method="POST" class="collapse" id="updateability"
+        action="{{ url_for('update_creature_ability', creature_id=creature.id, ability_id=ability.id) }}">
+        <table>
+            <tr>
+                <td>
+                    {{ abilityForm.name.label }}
+                    {{ abilityForm.name(value=ability.name) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.description.label }}
+                    </br>
+                    <textarea id="abilityForm-description" name="abilityForm-description" cols="70" ,
+                        rows="6">{{ ability.description }}</textarea>
+                </td>
+            </tr>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.attack.label }}
+                    {{ abilityForm.attack(default=ability.attack, checked=ability.attack) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.toHit.label }}
+                    {{ abilityForm.toHit(value=ability.toHit) }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.damageFormula.label }}
+                    {{ abilityForm.damageFormula(value=attack.damageFormula) }}
+                </td>
+
+                <td>
+                    {{ abilityForm.damageType.label }}
+                    {{ abilityForm.damageType() }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.attack2.label }}
+                    {% if attack2 is not none %}
+                    {{ abilityForm.attack2(default=true, checked=true) }}
+                    {% else %}
+                    {{ abilityForm.attack2 }}
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    {{ abilityForm.damageFormula2.label }}
+                    {{ abilityForm.damageFormula2(value=attack2.damageFormula) }}
+                </td>
+                <td>
+                    {{ abilityForm.damageType2.label }}
+                    {{ abilityForm.damageType2 }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Update Ability" />
+    </form>
+
+    <form method="POST" action="{{ url_for('delete_ability', ability_id=ability.id) }}">
+        <input type=hidden value="{{ creature.id }}" name=creature_id>
+        <input type="submit" value="Delete Ability" />
+    </form>
+</div>
+{% endblock %}

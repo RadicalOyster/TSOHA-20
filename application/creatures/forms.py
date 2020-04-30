@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, DecimalField, IntegerField, BooleanField, validators
+from wtforms import StringField, DecimalField, IntegerField, BooleanField, SelectField, SubmitField, validators
+from application._init_ import damagetypes
 
 class CreatureForm(FlaskForm):
     name = StringField("Name", [validators.Length(min=2), validators.Length(max=40), validators.optional()])
@@ -98,3 +99,12 @@ class CreatureEditForm(FlaskForm):
 
     class Meta:
         csrf = False
+    
+class creatureSearchForm(FlaskForm):
+    name = StringField("Search by name:")
+    damageType = SelectField(u"Search by damage type:", choices=damagetypes)
+    nameButton = SubmitField("Search")
+    damageTypeButton = SubmitField("Search")
+
+    class Meta:
+        csrf =False

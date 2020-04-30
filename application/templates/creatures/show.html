@@ -35,7 +35,7 @@
     <b>Challenge: </b>{{ creature.cr }}
     <br />
     <br />
-    <table style="width:250px">
+    <table style="width:300px">
         <tr style="color:maroon">
             <th>STR</th>
             <th>DEX</th>
@@ -46,12 +46,12 @@
         </tr>
 
         <tr>
-            <td align="center"> {{ creature.str }}</td>
-            <td align="center"> {{ creature.dex }}</td>
-            <td align="center"> {{ creature.con }}</td>
-            <td align="center"> {{ creature.int }}</td>
-            <td align="center"> {{ creature.wis }}</td>
-            <td align="center"> {{ creature.cha }}</td>
+            <td align="center"> {{ creature.str }} ({{ ((creature.str - 10)/2)|round(0, 'floor')|int }})</td>
+            <td align="center"> {{ creature.dex }} ({{ ((creature.dex - 10)/2)|round(0, 'floor')|int }})</td>
+            <td align="center"> {{ creature.con }} ({{ ((creature.con - 10)/2)|round(0, 'floor')|int }})</td>
+            <td align="center"> {{ creature.int }} ({{ ((creature.int - 10)/2)|round(0, 'floor')|int }})</td>
+            <td align="center"> {{ creature.wis }} ({{ ((creature.wis - 10)/2)|round(0, 'floor')|int }})</td>
+            <td align="center"> {{ creature.cha }} ({{ ((creature.cha - 10)/2)|round(0, 'floor')|int }})</td>
         </tr>
 
         <tr style="color:maroon">
@@ -86,6 +86,7 @@
         {{ skill }} +{{ mod }}.
         {% endfor %}
     </div>
+
     <table>
         <br />
         <tr>
@@ -93,7 +94,11 @@
         </tr>
         {% for ability in creature.abilities %}
         <div id="abilities" style="background-color: #ebe1c7" style="width: 1500px">
+            {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
+            <a><b><u><a href="{{ url_for('creature_ability', creature_id=creature.id, ability_id=ability.id) }}" style="color:maroon">{{ability.name}}.</u></b></a> <i>{{ability.description}}</i>
+            {% else %}
             <b>{{ability.name}}.</b> <i>{{ability.description}}</i>
+            {% endif %}
             {% for attack in ability.attacks %}
             : +{{ ability.toHit }} to hit.
             <i>On hit: </i> {{ attack.damageFormula }} {{ attack.damageType.type }} damage.
@@ -101,6 +106,7 @@
         </div>
         {% endfor %}
     </table>
+
     {% if "ADMIN" in (current_user.roles|map(attribute='name')) %}
     <div>
         <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#newability"
@@ -147,7 +153,7 @@
 
                 <td>
                     {{ abilityForm.damageType.label }}
-                    {{ abilityForm.damageType() }}
+                    {{ abilityForm.damageType }}
                 </td>
             </tr>
             <tr>

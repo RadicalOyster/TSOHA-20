@@ -34,12 +34,12 @@
             </tr>
             <tr>
                 <td>
-                    {{ form.repeat.label }}
+                    {{ form.newpassword.label }}
                 </td>
                 <td>
-                    {{ form.repeat }}
+                    {{ form.newpassword }}
                 </td>
-                {% for error in form.errors["repeat"] %}
+                {% for error in form.errors["newpassword"] %}
                 <td>
                     <a class="alert alert-error">
                         <strong style="color:red">Error: </strong> {{error}}
@@ -49,10 +49,10 @@
             </tr>
             <tr>
                 <td>
-                    {{ form.newpassword.label }}
+                    {{ form.repeat.label }}
                 </td>
                 <td>
-                    {{ form.newpassword }}
+                    {{ form.repeat }}
                 </td>
                 {% for error in form.errors["repeat"] %}
                 <td>

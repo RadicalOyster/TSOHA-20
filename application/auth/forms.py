@@ -22,9 +22,9 @@ class SignupForm(FlaskForm):
 
 
 class PasswordChangeForm(FlaskForm):
-    currentpassword = PasswordField("Password", [validators.Length(min=4, max=40), validators.EqualTo("repeat", message="Passwords must match")])
+    currentpassword = PasswordField("Password", [validators.Length(min=4, max=40)])
+    newpassword = PasswordField("New Password", [validators.Length(min=4, max=40), validators.EqualTo("repeat", message="Passwords must match")])
     repeat = PasswordField("Repeat", [validators.Length(min=4, max=40)])
-    newpassword = PasswordField("New Password", [validators.Length(min=4, max=40)])
 
     class Meta:
         csrf = False
