@@ -32,8 +32,11 @@ hit points, armor rating, challenge rating, ability scores and saving throws and
 
 **Documentation**
 
-* [Database diagram](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/preliminary%20database%20diagram.png)
+* [Installation](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/installation%20guide.md)
+* [Usage guide](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/usage%20guide.md)
+* [Database diagram](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/database%20diagram.png)
 * [User stories](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/user_stories.md)
+* [Create tables for database](https://github.com/RadicalOyster/TSOHA-20-Dungeons-and-Dragons-Database/blob/master/documentation/create%20tables.md)
 
 * Default admin login Username: Admin, Password: Admin
 
